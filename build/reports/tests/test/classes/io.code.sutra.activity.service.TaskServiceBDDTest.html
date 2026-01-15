@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - TaskServiceBDDTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>TaskServiceBDDTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/io.code.sutra.activity.service.html">io.code.sutra.activity.service</a> &gt; TaskServiceBDDTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.010s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Tests</a>
+</li>
+<li>
+<a href="#">Standard output</a>
+</li>
+<li>
+<a href="#">Standard error</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">Given no tasks, when getAllTasks is called, then return empty list</td>
+<td class="success">bddGetAllTasksReturnsEmptyList()</td>
+<td class="success">0.010s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre id="class-stdout">2026-01-15T18:24:19.101-05:00  INFO 12776 --- [activity-service] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.code.sutra.activity.service.TaskServiceBDDTest]: TaskServiceBDDTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.10174-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;Could not detect default configuration classes for test class [io.code.sutra.activity.service.TaskServiceBDDTest]: TaskServiceBDDTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.&quot;,&quot;logger_name&quot;:&quot;org.springframework.test.context.support.AnnotationConfigContextLoaderUtils&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.104-05:00  INFO 12776 --- [activity-service] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.code.sutra.activity.ActivityApplication for test class io.code.sutra.activity.service.TaskServiceBDDTest
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.104344-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;Found @SpringBootConfiguration io.code.sutra.activity.ActivityApplication for test class io.code.sutra.activity.service.TaskServiceBDDTest&quot;,&quot;logger_name&quot;:&quot;org.springframework.boot.test.context.SpringBootTestContextBootstrapper&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-15T18:24:19.122-05:00  INFO 12776 --- [activity-service] [    Test worker] i.c.s.a.service.TaskServiceBDDTest       : Starting TaskServiceBDDTest using Java 24.0.1 with PID 12776 (started by saurabhchakote in /Users/saurabhchakote/Local/Technoration/services/activity-service)
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.12275-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;Starting TaskServiceBDDTest using Java 24.0.1 with PID 12776 (started by saurabhchakote in /Users/saurabhchakote/Local/Technoration/services/activity-service)&quot;,&quot;logger_name&quot;:&quot;io.code.sutra.activity.service.TaskServiceBDDTest&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.123-05:00  INFO 12776 --- [activity-service] [    Test worker] i.c.s.a.service.TaskServiceBDDTest       : The following 1 profile is active: &quot;test&quot;
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.123011-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;The following 1 profile is active: \&quot;test\&quot;&quot;,&quot;logger_name&quot;:&quot;io.code.sutra.activity.service.TaskServiceBDDTest&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.216-05:00  INFO 12776 --- [activity-service] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.216336-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;Bootstrapping Spring Data JPA repositories in DEFAULT mode.&quot;,&quot;logger_name&quot;:&quot;org.springframework.data.repository.config.RepositoryConfigurationDelegate&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.222-05:00  INFO 12776 --- [activity-service] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 2 JPA repository interfaces.
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.222363-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;Finished Spring Data repository scanning in 3 ms. Found 2 JPA repository interfaces.&quot;,&quot;logger_name&quot;:&quot;org.springframework.data.repository.config.RepositoryConfigurationDelegate&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.266-05:00  INFO 12776 --- [activity-service] [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=d252c404-8222-3594-858f-79746c518ae4
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.266246-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;BeanFactory id=d252c404-8222-3594-858f-79746c518ae4&quot;,&quot;logger_name&quot;:&quot;org.springframework.cloud.context.scope.GenericScope&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.382-05:00  INFO 12776 --- [activity-service] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.382722-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;HikariPool-2 - Starting...&quot;,&quot;logger_name&quot;:&quot;com.zaxxer.hikari.HikariDataSource&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.384-05:00  INFO 12776 --- [activity-service] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:6172fa1c-7392-40ee-b09a-6951e46423b7 user=SA
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.384003-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:6172fa1c-7392-40ee-b09a-6951e46423b7 user=SA&quot;,&quot;logger_name&quot;:&quot;com.zaxxer.hikari.pool.HikariPool&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.384-05:00  INFO 12776 --- [activity-service] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.384228-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;HikariPool-2 - Start completed.&quot;,&quot;logger_name&quot;:&quot;com.zaxxer.hikari.HikariDataSource&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.397-05:00  INFO 12776 --- [activity-service] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.397486-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;HHH008540: Processing PersistenceUnitInfo [name: default]&quot;,&quot;logger_name&quot;:&quot;org.hibernate.orm.jpa&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.406-05:00  INFO 12776 --- [activity-service] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.406157-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;No LoadTimeWeaver setup: ignoring JPA class transformer&quot;,&quot;logger_name&quot;:&quot;org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.406-05:00  INFO 12776 --- [activity-service] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:6172fa1c-7392-40ee-b09a-6951e46423b7]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: 6172FA1C-7392-40EE-B09A-6951E46423B7/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.406953-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;HHH10001005: Database info:\n\tDatabase JDBC URL [jdbc:h2:mem:6172fa1c-7392-40ee-b09a-6951e46423b7]\n\tDatabase driver: H2 JDBC Driver\n\tDatabase dialect: H2Dialect\n\tDatabase version: 2.4.240\n\tDefault catalog/schema: 6172FA1C-7392-40EE-B09A-6951E46423B7/PUBLIC\n\tAutocommit mode: undefined/unknown\n\tIsolation level: READ_COMMITTED [default READ_COMMITTED]\n\tJDBC fetch size: 100\n\tPool: DataSourceConnectionProvider\n\tMinimum pool size: undefined/unknown\n\tMaximum pool size: undefined/unknown&quot;,&quot;logger_name&quot;:&quot;org.hibernate.orm.connections.pooling&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.416-05:00  INFO 12776 --- [activity-service] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.41629-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)&quot;,&quot;logger_name&quot;:&quot;org.hibernate.orm.core&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.417-05:00  INFO 12776 --- [activity-service] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.417949-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;Initialized JPA EntityManagerFactory for persistence unit 'default'&quot;,&quot;logger_name&quot;:&quot;org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.544-05:00  WARN 12776 --- [activity-service] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.544045-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning&quot;,&quot;logger_name&quot;:&quot;org.springframework.boot.jpa.autoconfigure.JpaBaseConfiguration$JpaWebConfiguration&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;WARN&quot;,&quot;level_value&quot;:30000}
+2026-01-15T18:24:19.930-05:00  INFO 12776 --- [activity-service] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.930232-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;Exposing 1 endpoint beneath base path '/actuator'&quot;,&quot;logger_name&quot;:&quot;org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+2026-01-15T18:24:19.946-05:00  INFO 12776 --- [activity-service] [    Test worker] i.c.s.a.service.TaskServiceBDDTest       : Started TaskServiceBDDTest in 0.841 seconds (process running for 4.785)
+{&quot;@timestamp&quot;:&quot;2026-01-15T18:24:19.946104-05:00&quot;,&quot;@version&quot;:&quot;1&quot;,&quot;message&quot;:&quot;Started TaskServiceBDDTest in 0.841 seconds (process running for 4.785)&quot;,&quot;logger_name&quot;:&quot;io.code.sutra.activity.service.TaskServiceBDDTest&quot;,&quot;thread_name&quot;:&quot;Test worker&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;level_value&quot;:20000}
+</pre>
+<button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="class-stdout">Copy</button>
+</span>
+</div>
+<div class="tab">
+<h2>Standard error</h2>
+<span class="code">
+<pre id="class-stderr">18:24:19,120 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [customFields] in [ch.qos.logback.classic.Logger]
+</pre>
+<button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="class-stderr">Copy</button>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 9.2.1</a> at Jan 15, 2026, 6:24:20 PM</p>
+</div>
+</div>
+</body>
+</html>

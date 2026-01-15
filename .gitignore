@@ -29,6 +29,10 @@ logs/
 .DS_Store      # macOS
 Thumbs.db      # Windows
 .DS_Store/*
+.idea/
+DS_Store
+
+
 # Environment Variables and Secrets (sensitive data should never be committed)
 .env
 application.properties
