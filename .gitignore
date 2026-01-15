@@ -1,0 +1,39 @@
+# IDE Settings
+.idea/         # IntelliJ IDEA
+.vscode/       # Visual Studio Code
+.eclipse/      # Eclipse
+.classpath
+.project
+.settings/
+*.iml
+
+# Build Artifacts
+target/        # Maven build output directory
+build/         # Gradle build output directory
+out/
+
+# Dependencies
+*.jar
+*.war
+*.class
+
+# Logs and Temporary Files
+logs/
+*.log
+*.tmp
+*.swp
+*.bak
+*.txt
+
+# OS-specific files
+.DS_Store      # macOS
+Thumbs.db      # Windows
+.DS_Store/*
+# Environment Variables and Secrets (sensitive data should never be committed)
+.env
+application.properties
+application.yml
+!application.properties.example # Example file can be committed
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar # The wrapper scripts can be committed, but not the jar
