@@ -31,7 +31,8 @@ Thumbs.db      # Windows
 .DS_Store/*
 .idea/
 DS_Store
-
+bin
+bin/
 
 # Environment Variables and Secrets (sensitive data should never be committed)
 .env
@@ -41,3 +42,4 @@ application.yml
 
 # Maven Wrapper
 .mvn/wrapper/maven-wrapper.jar # The wrapper scripts can be committed, but not the jar
+
