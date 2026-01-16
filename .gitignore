@@ -34,6 +34,7 @@ DS_Store
 bin
 bin/
 
+
 # Environment Variables and Secrets (sensitive data should never be committed)
 .env
 application.properties
