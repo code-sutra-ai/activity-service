@@ -45,11 +45,11 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-data-rest-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-rest-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-session-jdbc-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'net.serenity-bdd:serenity-junit5:3.7.0'
 	testImplementation 'net.serenity-bdd:serenity-spring:3.7.0'
 	testImplementation 'org.mockito:mockito-core:5.2.0'
@@ -57,6 +57,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-test'
 	testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure'
 	testImplementation 'org.assertj:assertj-core:3.24.2'
+
+	// Cucumber BDD dependencies for smoke tests (DataTable support + JUnit Platform engine + Spring integration)
+	testImplementation 'io.cucumber:cucumber-java:7.14.0'
+	testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.14.0'
+	testImplementation 'io.cucumber:cucumber-spring:7.14.0'
 }
 
 dependencyManagement {
@@ -71,6 +76,16 @@ tasks.named('test') {
 
 test {
     useJUnitPlatform()
+}
+
+// Add smokeTest task that runs only scenarios tagged with @smoke
+tasks.register('smokeTest', Test) {
+    group = 'verification'
+    description = 'Runs Cucumber BDD scenarios tagged with @smoke'
+    useJUnitPlatform() {
+        includeTags 'smoke'
+    }
+    systemProperty "spring.profiles.active", "test"
 }
 
 serenity {
