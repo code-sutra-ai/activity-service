@@ -92,3 +92,7 @@ serenity {
     reports = ["single-page-html", "aggregate", "dashboard"]
     outputDirectory = file("target/site/serenity")
 }
+
+bootJar {
+    archiveFileName = "activity-service-app-build.jar"
+}

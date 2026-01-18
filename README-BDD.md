@@ -32,3 +32,23 @@ Notes:
 - The Gradle wrapper should be present (`gradle/wrapper/gradle-wrapper.jar`). If missing, either install Gradle locally and run `gradle <task>` or restore the wrapper.
 - Tests run with the `test` Spring profile by default via the Gradle test tasks.
 
+## Docker
+
+Build the Docker image (uses multi-stage build):
+
+```bash
+# from project root
+docker build -t activity-service:latest .
+```
+
+If you built the JAR locally (or the Gradle wrapper is missing), pass the jar file as a build arg:
+
+```bash
+docker build --build-arg JAR_FILE=build/libs/activity-service-0.0.1-SNAPSHOT.jar -t activity-service:local .
+```
+
+Run the image:
+
+```bash
+docker run -p 8080:8080 activity-service:latest
+```
