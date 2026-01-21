@@ -2,11 +2,22 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <fieldNames>
+                <timestamp>timestamp</timestamp>
+                <level>level</level>
+                <thread>thread</thread>
+                <logger>logger</logger>
+                <message>message</message>
+                <context>context</context>
+                <correlationId>correlationId</correlationId>
+                <traceId>traceId</traceId>
+                <spanId>spanId</spanId>
+            </fieldNames>
+            <customFields>{"app":"activity-service"}</customFields>
+        </encoder>
     </appender>
     <root level="INFO">
-        <appender-ref ref="JSON_CONSOLE">
-            <customFields>{"app":"activity-service"}</customFields>
-        </appender-ref>
+        <appender-ref ref="JSON_CONSOLE"/>
     </root>
 </configuration>

@@ -31,3 +31,6 @@ spring:
         max-file-size: 10MB
         max-history: 30
         total-size-cap: 100MB
+
+jwt:
+  secret: this_is_a_very_secure_jwt_secret_key_for_tests_2026

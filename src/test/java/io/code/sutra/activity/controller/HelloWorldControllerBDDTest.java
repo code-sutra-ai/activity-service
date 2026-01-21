@@ -14,9 +14,13 @@ class HelloWorldControllerBDDTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Given GET /hello, when called, then return 200 OK")
+    @DisplayName("Given GET /hello, when called with valid JWT, then return 200 OK")
     void bddHelloWorldEndpoint() throws Exception {
-        mockMvc.perform(get("/hello"))
+        String jwtToken = System.getenv().getOrDefault("JWT_TOKEN", null);
+        if (jwtToken == null) {
+            throw new IllegalStateException("JWT_TOKEN environment variable must be set for endpoint testing.");
+        }
+        mockMvc.perform(get("/hello").header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
     }
 }

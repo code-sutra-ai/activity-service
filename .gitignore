@@ -3657,3 +3657,4 @@ target/site/serenity/prism/prism.js
 target/site/serenity/scripts/imgpreview.full.jquery.js
 target/site/serenity/scripts/jquery-1.11.1.min.js
 target/site/serenity/scripts/jquery.js
+.vscode/settings.json

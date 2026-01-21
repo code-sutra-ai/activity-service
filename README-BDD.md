@@ -52,3 +52,36 @@ Run the image:
 ```bash
 docker run -p 8080:8080 activity-service:latest
 ```
+
+## JWT Token Generation (for testing/demo)
+
+To generate a JWT token for API access, use the following endpoint:
+
+```
+POST /auth/token
+Content-Type: application/json
+
+{
+  "username": "your-username"
+}
+```
+
+The response will be:
+```
+{
+  "token": "<JWT_TOKEN>"
+}
+```
+
+Use this token in the `Authorization` header for all API requests:
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+## Prometheus Metrics
+
+Prometheus metrics are available at:
+
+```
+GET /actuator/prometheus
+```
