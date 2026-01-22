@@ -54,3 +54,58 @@
   ```zsh
   SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
   ```
+
+## How to Test Locally
+
+- **Run all unit, integration, and BDD tests using the local profile:**
+  ```zsh
+  SPRING_PROFILES_ACTIVE=local ./gradlew clean test --info
+  ```
+  This command runs all tests with the local configuration, using the `Dummy` JWT token for authentication. It provides detailed output for troubleshooting.
+
+- **Run a specific test class:**
+  ```zsh
+  SPRING_PROFILES_ACTIVE=local ./gradlew test --tests io.code.sutra.activity.controller.HelloWorldControllerBDDTest
+  ```
+  Useful for isolating and debugging a single test or controller.
+
+- **Set up environment variables for local testing (optional):**
+  ```zsh
+  export SPRING_PROFILES_ACTIVE=local
+  export COGNITO_TEST_JWT=Dummy
+  ./gradlew test
+  ```
+  Ensures the local profile and dummy token are used for all test runs.
+
+- **View test reports:**
+  After running tests, open the HTML report for details:
+  ```zsh
+  open build/reports/tests/test/index.html
+  ```
+
+## How to Test Locally with Postman
+
+1. **Start the service in local profile:**
+   ```zsh
+   SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
+   ```
+   This will use `application-local.yml` and accept the JWT token value `Dummy` for authentication.
+
+2. **Configure Postman for local testing:**
+   - Set the request URL to your local server, e.g.:
+     ```
+     http://localhost:8080/hello
+     ```
+   - Add the following header to your request:
+     ```
+     Authorization: Bearer Dummy
+     ```
+   - You can use any HTTP method supported by your endpoint (GET, POST, etc.).
+
+3. **Expected behavior:**
+   - All secured endpoints will accept the `Dummy` token and respond as if authenticated.
+   - Actuator endpoints (e.g., `/actuator/health`, `/actuator/prometheus`) do not require authentication.
+
+4. **Troubleshooting:**
+   - If you get a 401 Unauthorized, ensure you are using the `local` profile and the `Dummy` token.
+   - Check logs for errors and verify `COGNITO_JWK_URL` is set to a dummy value in `application-local.yml`.

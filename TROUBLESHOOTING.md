@@ -58,25 +58,44 @@ This guide helps you quickly diagnose and resolve common issues with unit and in
 
 ## General Troubleshooting Commands
 
-- Run all tests and see detailed output:
+- **Run all tests with detailed output:**
   ```zsh
   ./gradlew clean test --info
   ```
-- Run a specific test class:
+  *Significance:* Runs all unit and integration tests from a clean state, showing detailed logs for diagnosing failures, dependency issues, and configuration problems.
+
+- **Run a specific test class:**
   ```zsh
   ./gradlew test --tests io.code.sutra.activity.controller.HelloWorldControllerBDDTest
   ```
-- Check for configuration errors:
+  *Significance:* Isolates and runs only the specified test class, useful for debugging a single failing test or controller.
+
+- **Check for configuration and test errors:**
   ```zsh
   grep -i error build/reports/tests/test/*.xml
   cat build/reports/problems/problems-report.html
   ```
-- Validate YAML syntax:
+  *Significance:* Quickly surfaces error messages from test reports and Gradle's problem report, helping pinpoint root causes like bean creation failures, missing dependencies, or misconfigured profiles.
+
+- **Validate YAML syntax:**
   ```zsh
   yq e . src/main/resources/application.yml
   yq e . src/main/resources/application-local.yml
   yq e . src/test/resources/application-test.yml
   ```
+  *Significance:* Ensures your configuration files are valid and free of syntax errors, which can prevent Spring Boot from loading the application context.
+
+- **Refresh Gradle dependencies:**
+  ```zsh
+  ./gradlew --refresh-dependencies
+  ```
+  *Significance:* Forces Gradle to re-download all dependencies, resolving issues caused by corrupted or outdated local caches.
+
+- **Run tests with a specific profile:**
+  ```zsh
+  ./gradlew test -Dspring.profiles.active=test
+  ```
+  *Significance:* Ensures the correct Spring profile and configuration are used during test execution, avoiding environment-specific failures.
 
 ## When to Ask for Help
 - If you see persistent `ApplicationContext` errors after following these steps, check for recent changes to configuration or dependencies.
