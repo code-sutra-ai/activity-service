@@ -8,8 +8,12 @@ import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import io.micrometer.tracing.Tracer;
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.propagation.Propagator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -24,16 +28,21 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 public class CognitoAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(CognitoAuthenticationFilter.class);
     private final String cognitoJwkUrl;
+    private final String cognitoIssuer;
     private JWKSet jwkSet;
+
+    @Autowired(required = false)
+    private Tracer tracer;
+    @Autowired(required = false)
+    private Propagator propagator;
 
     public CognitoAuthenticationFilter(String cognitoJwkUrl, String cognitoIssuer) {
         this.cognitoJwkUrl = cognitoJwkUrl;
+        this.cognitoIssuer = cognitoIssuer;
         if (cognitoJwkUrl == null || cognitoJwkUrl.isEmpty() || cognitoJwkUrl.contains("<")) {
             logger.error("COGNITO_JWK_URL is not set or invalid. Set the environment variable to a valid Cognito JWKs URL.");
             this.jwkSet = null;
@@ -50,11 +59,37 @@ public class CognitoAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String path = request.getRequestURI();
+        String activeProfile = System.getProperty("spring.profiles.active", System.getenv().getOrDefault("SPRING_PROFILES_ACTIVE", ""));
         if (path.startsWith("/actuator")) {
             filterChain.doFilter(request, response);
             return;
         }
         String jwt = getJwtFromRequest(request);
+        // Assign traceId, spanId, correlationId if not present
+        String traceId = (tracer != null && tracer.currentSpan() != null) ? tracer.currentSpan().context().traceId() : null;
+        String spanId = (tracer != null && tracer.currentSpan() != null) ? tracer.currentSpan().context().spanId() : null;
+        String correlationId = request.getHeader("X-Correlation-Id");
+        if (correlationId == null) {
+            correlationId = java.util.UUID.randomUUID().toString();
+        }
+        if (tracer != null && tracer.currentSpan() == null) {
+            Span span = tracer.nextSpan().name("http-request").start();
+            tracer.withSpan(span);
+            traceId = span.context().traceId();
+            spanId = span.context().spanId();
+        }
+        org.slf4j.MDC.put("traceId", traceId != null ? traceId : "-");
+        org.slf4j.MDC.put("spanId", spanId != null ? spanId : "-");
+        org.slf4j.MDC.put("correlationId", correlationId);
+        // Accept JWT token = "Dummy" only for local profile
+        if ("Dummy".equals(jwt) && "local".equalsIgnoreCase(activeProfile)) {
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    "local-user", null, Collections.emptyList());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
+            return;
+        }
         if (StringUtils.hasText(jwt)) {
             try {
                 SignedJWT signedJWT = SignedJWT.parse(jwt);
@@ -90,7 +125,16 @@ public class CognitoAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        filterChain.doFilter(request, response);
+        try {
+            filterChain.doFilter(request, response);
+        } finally {
+            org.slf4j.MDC.remove("traceId");
+            org.slf4j.MDC.remove("spanId");
+            org.slf4j.MDC.remove("correlationId");
+            if (tracer != null && tracer.currentSpan() != null) {
+                tracer.currentSpan().end();
+            }
+        }
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {

@@ -1,0 +1,48 @@
+# Local profile configuration
+# spring.profiles.active is NOT allowed in profile-specific YAML files and must be set via environment or command line
+
+# Resilience4j configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+
+# Cognito authentication configuration for local
+COGNITO_JWK_URL: ""
+COGNITO_ISSUER: ""
+
+# Logging
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        web: INFO
+
+# Prometheus, Actuator, and Tracing configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces
+      export:
+        enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
