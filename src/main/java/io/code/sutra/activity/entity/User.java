@@ -13,13 +13,14 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // accept non-nullable id provided by code (DataInitializer, IdGenerator)
     private Long id;
 
     @Column(unique = true, nullable = false)
     private String name;
 
     public String getName() {
+        if (this.name == null || this.name.isEmpty()) return this.name;
         String original = this.name;
         // Capitalize the first character and concatenate with the rest of the string
         return original.substring(0, 1).toUpperCase() + original.substring(1);

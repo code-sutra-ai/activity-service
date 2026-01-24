@@ -4,24 +4,23 @@ import io.code.sutra.activity.entity.Task;
 import io.code.sutra.activity.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Map;
+
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/tasks")
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
 
-    @RequestMapping("/api/tasks/info")
+    @GetMapping
     public ResponseEntity<List<Task>> getAllTasks(
             @RequestParam(required = false) String status) {
         log.info("Fetching tasks with status: {}", status);
@@ -32,13 +31,15 @@ public class TaskController {
         log.info("Retrieved {}", allTasks.toString());
         return ResponseEntity.ok(allTasks);
     }
-    @GetMapping("/api/tasks/{id}")
+
+    @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
-    @GetMapping("/api/tasks/assignee/{name}")
+
+    @GetMapping("/assignee/{name}")
     public ResponseEntity<List<Task>> findByAssignee(@PathVariable String name) {
         List<Task> allTasks = taskService.getTaskByAssignee(name.toLowerCase());
         log.info("Retrieved {}", allTasks.toString());
@@ -48,7 +49,11 @@ public class TaskController {
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         Task created = taskService.createTask(task);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(created.getId())
+            .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 
     @PutMapping("/{id}")
@@ -63,10 +68,10 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         boolean deleted = taskService.deleteTask(id);
         if (deleted) {
-            return ResponseEntity.ok(Map.of("success", true));
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }

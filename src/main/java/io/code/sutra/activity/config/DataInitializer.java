@@ -18,15 +18,15 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         // Initialize users
-        userRepository.save(new User(null, "mukesh"));
-        userRepository.save(new User(null, "elon"));
-        userRepository.save(new User(null, "jack"));
-        userRepository.save(new User(null, "diana"));
+        userRepository.save(new User(101L, "mukesh"));
+        userRepository.save(new User(102L, "elon"));
+        userRepository.save(new User(103L, "jack"));
+        userRepository.save(new User(104L, "diana"));
 
         // Initialize tasks
-        taskRepository.save(new Task(null, "Bike Repair", "completed", "mukesh", "bike-service"));
-        taskRepository.save(new Task(null, "Pay Tax", "pending", "mukesh", "bike-service"));
-        taskRepository.save(new Task(null, "Bill Pay", "in-progress", "elon", "billing-service"));
-        taskRepository.save(new Task(null, "Music Lessons", "pending", "diana", "music-service"));
+        taskRepository.save(new Task(11L, "Bike Repair", "completed", "mukesh", "bike-service"));
+        taskRepository.save(new Task(12L, "Pay Tax", "pending", "mukesh", "bike-service"));
+        taskRepository.save(new Task(13L, "Bill Pay", "in-progress", "elon", "billing-service"));
+        taskRepository.save(new Task(14L, "Music Lessons", "pending", "diana", "music-service"));
     }
 }

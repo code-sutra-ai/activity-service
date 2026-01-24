@@ -38,6 +38,52 @@ Run the image:
 
 ---
 
+# Sample data JSON
+
+The application ships with a `DataInitializer` that pre-populates a few users and tasks when the application starts in a local/test profile. Below are example JSON payloads you can use to create data via the HTTP API (useful for manual testing or to seed environments).
+
+- Create a User (POST /api/users)
+
+```json
+{
+  "name": "sam"
+}
+```
+
+Example curl:
+
+```bash
+curl -X POST http://localhost:8080/api/users \
+ -H 'Content-Type: application/json' \
+ -d '{"name":"mukesh"}'
+```
+
+- Create a Task (POST /api/tasks)
+
+```json
+{
+  "id": 11,
+  "title": "Fix bike",
+  "status": "pending",
+  "assignee": "mukesh",
+  "service": "bike-service"
+}
+```
+
+Example curl:
+
+```bash
+curl -X POST http://localhost:8080/api/tasks \
+ -H 'Content-Type: application/json' \
+ -d '{"id":11,"title":"Fix bike","status":"pending","assignee":"mukesh","service":"bike-service"}'
+```
+
+Notes:
+- If you rely on the included `DataInitializer`, you will already find sample users (e.g. `mukesh`, `elon`, `jack`, `diana`) and tasks created at startup. The JSON examples above are for calling the HTTP endpoints directly when the app is running.
+- `Task` instances in this project accept explicit `id` values (the starter data uses fixed ids). Avoid re-using an id already persisted unless you intend to update the existing row.
+
+---
+
 # See also
 - [DEVELOPER_GUIDE.md](./DEVELOPER_GUIDE.md) for developer setup, tracing, and technology details
 - [FUNCTIONAL_OVERVIEW.md](./FUNCTIONAL_OVERVIEW.md) for functional and security documentation

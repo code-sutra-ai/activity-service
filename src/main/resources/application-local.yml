@@ -46,3 +46,11 @@ management:
     export:
       prometheus:
         enabled: true
+
+# Local CORS (example) - uncomment and set origins for local testing
+app:
+  cors:
+    # Example: allow local frontend development server and localhost tools
+    # allowed-origins: "http://localhost:3000,http://127.0.0.1:3000"
+    allowed-origins: "*"
+    allow-credentials: false

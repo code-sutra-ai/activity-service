@@ -2,7 +2,6 @@ package io.code.sutra.activity.service;
 import ch.qos.logback.core.net.server.Client;
 import io.code.sutra.activity.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +11,8 @@ import io.code.sutra.activity.entity.Task;
 @RequiredArgsConstructor
 public class TaskService {
 
-    @Autowired
-    private TaskRepository taskRepository;
-    private NotificationService notificationService;
+    private final TaskRepository taskRepository;
+    private final NotificationService notificationService;
 
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
@@ -34,7 +32,9 @@ public class TaskService {
    public Task createTask(Task task) {
 
         Task savedTask = taskRepository.save(task);
-        notificationService.notify("Task created successfully", "success");
+        if (notificationService != null) {
+            notificationService.notify("Task created successfully", "success");
+        }
         return savedTask;
     }
 
@@ -51,7 +51,9 @@ public class TaskService {
                     existingTask.setAssignee(taskUpdates.getAssignee());
                 }
                 Task updated = taskRepository.save(existingTask);
-                notificationService.notify("Task updated successfully", "success");
+                if (notificationService != null) {
+                    notificationService.notify("Task updated successfully", "success");
+                }
                 return updated;
             })
             .orElse(null);
@@ -60,7 +62,9 @@ public class TaskService {
     public boolean deleteTask(Long id) {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
-            notificationService.notify("Task deleted successfully", "success");
+            if (notificationService != null) {
+                notificationService.notify("Task deleted successfully", "success");
+            }
             return true;
         }
         return false;

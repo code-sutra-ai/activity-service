@@ -1,19 +1,3 @@
-package io.code.sutra.activity.dto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+// This file contained DTOs that were unused. Removed to reduce redundancy.
+// If you need DTOs in the future, create them as needed under io.code.sutra.activity.dto
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class UserDTO {
-    private Long id;
-    private String name;
-}
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class CreateUserDTO {
-    private String name;
-}
