@@ -1,5 +1,6 @@
 package io.code.sutra.activity.controller;
 
+import io.code.sutra.activity.dto.AssignRequest;
 import io.code.sutra.activity.entity.Task;
 import io.code.sutra.activity.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,18 @@ public class TaskController {
             @PathVariable Long id,
             @RequestBody Task task) {
         Task updated = taskService.updateTask(id, task);
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping("/{id}/assign")
+    public ResponseEntity<Task> assignTask(@PathVariable Long id, @RequestBody AssignRequest req) {
+        if (req == null || req.getAssignee() == null || req.getAssignee().isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
+        Task updated = taskService.assignTask(id, req.getAssignee());
         if (updated != null) {
             return ResponseEntity.ok(updated);
         }

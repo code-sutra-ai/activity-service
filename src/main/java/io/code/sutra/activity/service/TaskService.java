@@ -59,6 +59,19 @@ public class TaskService {
             .orElse(null);
     }
 
+    public Task assignTask(Long id, String assignee) {
+        return taskRepository.findById(id)
+            .map(existingTask -> {
+                existingTask.setAssignee(assignee);
+                Task updated = taskRepository.save(existingTask);
+                if (notificationService != null) {
+                    notificationService.notify("Task assigned to " + assignee, "info");
+                }
+                return updated;
+            })
+            .orElse(null);
+    }
+
     public boolean deleteTask(Long id) {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
