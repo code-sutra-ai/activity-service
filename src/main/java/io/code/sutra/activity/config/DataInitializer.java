@@ -17,16 +17,16 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Initialize users
-        userRepository.save(new User(null, "mukesh"));
-        userRepository.save(new User(null, "elon"));
-        userRepository.save(new User(null, "jack"));
-        userRepository.save(new User(null, "diana"));
+        // Initialize users with explicit ids and optional fields
+        userRepository.save(new User(101L, "mukesh", "mukesh@jugaads.co.iz", "+1-555-0101", "Power user, admin"));
+        userRepository.save(new User(102L, "elon", "elon@jugaads.co.iz", "+1-555-0202", "Investor"));
+        userRepository.save(new User(103L, "jack", null, "+1-555-0303", ""));
+        userRepository.save(new User(104L, "diana", "diana@jugaads.co.iz", null, "Music enthusiast"));
 
-        // Initialize tasks
-        taskRepository.save(new Task(null, "Bike Repair", "completed", "mukesh", "bike-service"));
-        taskRepository.save(new Task(null, "Pay Tax", "pending", "mukesh", "bike-service"));
-        taskRepository.save(new Task(null, "Bill Pay", "in-progress", "elon", "billing-service"));
-        taskRepository.save(new Task(null, "Music Lessons", "pending", "diana", "music-service"));
+        // Initialize tasks with explicit ids
+        taskRepository.save(new Task(11L, "Bike Repair", "completed", "mukesh", "bike-service"));
+        taskRepository.save(new Task(12L, "Pay Tax", "pending", "mukesh", "bike-service"));
+        taskRepository.save(new Task(13L, "Bill Pay", "in-progress", "elon", "billing-service"));
+        taskRepository.save(new Task(14L, "Music Lessons", "pending", "diana", "music-service"));
     }
 }

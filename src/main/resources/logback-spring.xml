@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <appender name="COLORED_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr([%thread]){magenta} %clr(%-5level) %clr([traceId=%X{traceId:-},spanId=%X{spanId:-},correlationId=%X{correlationId:-}]){yellow} %clr(-){faint} %msg%n%wex
+            </pattern>
+        </encoder>
+    </appender>
     <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"app":"activity-service"}</customFields>
+            <fieldNames>
+                <loggerName>null</loggerName>
+            </fieldNames>
+        </encoder>
     </appender>
     <root level="INFO">
-        <appender-ref ref="JSON_CONSOLE">
-            <customFields>{"app":"activity-service"}</customFields>
-        </appender-ref>
+        <appender-ref ref="COLORED_CONSOLE"/>
+        <appender-ref ref="JSON_CONSOLE"/>
     </root>
 </configuration>

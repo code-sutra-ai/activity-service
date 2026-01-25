@@ -12,7 +12,7 @@ import lombok.Data;
 @ToString
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // Accept externally provided IDs (DataInitializer uses explicit ids)
     private Long id;
 
     @Column(nullable = false)
@@ -23,7 +23,7 @@ public class Task {
 
     private String assignee;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String service;
 
     public String getTitle() {
@@ -35,6 +35,7 @@ public class Task {
     }
 
     public String getAssignee() {
+        if (this.assignee == null || this.assignee.isEmpty()) return this.assignee;
         String original = this.assignee;
         // Capitalize the first character and concatenate with the rest of the string
         return original.substring(0, 1).toUpperCase() + original.substring(1);

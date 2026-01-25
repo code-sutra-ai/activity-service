@@ -1,65 +1,80 @@
 package io.code.sutra.activity.controller;
 
+import io.code.sutra.activity.config.Constants;
+import io.code.sutra.activity.dto.UserRequest;
 import io.code.sutra.activity.entity.User;
+import io.code.sutra.activity.mapper.UserMapper;
 import io.code.sutra.activity.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import jakarta.validation.Valid;
 
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@RequestMapping(Constants.USERS_BASE)
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @RequestMapping("/api/users/info")
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         log.info("Fetching all users");
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @RequestMapping("/api/users/add" )
-    public ResponseEntity<?> addUser(@RequestBody Map<String, String> request) {
+    @PostMapping
+    public ResponseEntity<?> addUser(@Valid @RequestBody UserRequest userReq) {
         try {
-            System.out.println("Received request to add user: " + request);
-            String name = request.get("name");
-            User user = userService.createUser(name);
-            return ResponseEntity.status(HttpStatus.CREATED).body(user.getName());
+            log.info("Received request to add user: {}", userReq);
+            User created = userService.createUser(userReq.getName().trim());
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("name", created.getName(), "id", created.getId()));
         } catch (RuntimeException e) {
+            log.error("Error creating user", e);
             return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Map.of("error", e.getMessage()));
         }
     }
 
-    /*@PutMapping
-    public ResponseEntity<?> updateUser(@RequestBody Map<String, String> request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userReq) {
         try {
-            String oldName = request.get("oldName");
-            String newName = request.get("newName");
-            User user = userService.updateUser(oldName, newName);
-            return ResponseEntity.ok(user.getName());
+            User updated = userService.updateUser(id, UserMapper.toEntity(userReq));
+            if (updated == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
+            }
+            // Build response map carefully to avoid Map.of(null) NPEs
+            Map<String, Object> resp = new java.util.HashMap<>();
+            resp.put("id", updated.getId());
+            resp.put("name", updated.getName());
+            if (updated.getEmail() != null) resp.put("email", updated.getEmail());
+            if (updated.getPhone() != null) resp.put("phone", updated.getPhone());
+            if (updated.getNotes() != null) resp.put("notes", updated.getNotes());
+            return ResponseEntity.ok(resp);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("error", e.getMessage()));
+            log.error("Error updating user id={}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
         }
     }
-*/
-    @DeleteMapping("/api/users/{name}")
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
-            userService.deleteUser(id);
-            return ResponseEntity.ok(Map.of("success", true));
-        } catch (RuntimeException e) {
+            boolean deleted = userService.deleteUser(id);
+            if (deleted) {
+                return ResponseEntity.ok(Map.of("success", true));
+            }
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", "User not found"));
+        } catch (RuntimeException e) {
+            log.error("Error deleting user id={}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", e.getMessage()));
         }
     }

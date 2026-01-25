@@ -31,3 +31,5 @@ spring:
         max-file-size: 10MB
         max-history: 30
         total-size-cap: 100MB
+
+COGNITO_JWK_URL: "http://localhost/dummy-jwk"

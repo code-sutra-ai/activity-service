@@ -1,27 +1,31 @@
 package io.code.sutra.activity.controller;
 
+import io.code.sutra.activity.config.Constants;
+import io.code.sutra.activity.dto.AssignRequest;
+import io.code.sutra.activity.dto.TaskRequest;
 import io.code.sutra.activity.entity.Task;
+import io.code.sutra.activity.mapper.TaskMapper;
 import io.code.sutra.activity.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import jakarta.validation.Valid;
+import java.net.URI;
 import java.util.List;
-import java.util.Map;
+
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@RequestMapping(Constants.TASKS_BASE)
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
 
-    @RequestMapping("/api/tasks/info")
+    @GetMapping
     public ResponseEntity<List<Task>> getAllTasks(
             @RequestParam(required = false) String status) {
         log.info("Fetching tasks with status: {}", status);
@@ -32,29 +36,40 @@ public class TaskController {
         log.info("Retrieved {}", allTasks.toString());
         return ResponseEntity.ok(allTasks);
     }
-    @GetMapping("/api/tasks/{id}")
+
+    @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+        log.info("Fetching task with id: {}", id);
         return taskService.getTaskById(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
-    @GetMapping("/api/tasks/assignee/{name}")
+
+    @GetMapping("/assignee/{name}")
     public ResponseEntity<List<Task>> findByAssignee(@PathVariable String name) {
-        List<Task> allTasks = taskService.getTaskByAssignee(name.toLowerCase());
+        log.info("Fetching tasks for assignee: {}", name);
+        List<Task> allTasks = taskService.getTaskByAssignee(name);
         log.info("Retrieved {}", allTasks.toString());
         return ResponseEntity.ok(allTasks);
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<?> createTask(@Valid @RequestBody TaskRequest req) {
+        Task task = TaskMapper.toEntity(req);
         Task created = taskService.createTask(task);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(created.getId())
+            .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(
             @PathVariable Long id,
-            @RequestBody Task task) {
+            @RequestBody TaskRequest taskReq) {
+        log.info("Updating task with id: {} task: {}", id, taskReq);
+        Task task = TaskMapper.toEntity(taskReq);
         Task updated = taskService.updateTask(id, task);
         if (updated != null) {
             return ResponseEntity.ok(updated);
@@ -62,11 +77,21 @@ public class TaskController {
         return ResponseEntity.notFound().build();
     }
 
+    @PatchMapping("/{id}/assign")
+    public ResponseEntity<Task> assignTask(@PathVariable Long id, @Valid @RequestBody AssignRequest req) {
+        log.info("Assigning task with id: {} to user: {}", id, req.getAssignee());
+        Task updated = taskService.assignTask(id, req.getAssignee());
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         boolean deleted = taskService.deleteTask(id);
         if (deleted) {
-            return ResponseEntity.ok(Map.of("success", true));
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }
