@@ -1,23 +1,25 @@
 package io.code.sutra.activity.service;
 
 import io.code.sutra.activity.repository.TaskRepository;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@ExtendWith({SerenityJUnit5Extension.class, MockitoExtension.class})
 class TaskServiceBDDTest {
 
-    @MockitoBean
+    @Mock
     private TaskRepository taskRepository;
 
-    @MockitoBean
+    @InjectMocks
     private TaskService taskService;
 
     @Test

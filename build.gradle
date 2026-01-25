@@ -29,6 +29,14 @@ ext {
 	set('springCloudVersion', "2025.1.0")
 }
 
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		// Ensure we use JUnit 5.9.2 BOM so Serenity's junit5 listener is compatible
+		mavenBom 'org.junit:junit-bom:5.9.2'
+	}
+}
+
 dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
@@ -37,7 +45,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.h2database:h2:2.4.240'
-	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
+	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j:5.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'
@@ -53,40 +61,159 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'net.serenity-bdd:serenity-junit5:3.7.0'
-	testImplementation 'net.serenity-bdd:serenity-spring:3.7.0'
 	testImplementation 'org.mockito:mockito-core:5.2.0'
 	testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
 	testImplementation 'org.assertj:assertj-core:3.24.2'
+
+	// Serenity JUnit5 and Spring integration (restore runtime listener so aggregate can see tests)
+	testImplementation('net.serenity-bdd:serenity-junit5:3.7.0') {
+		// Exclude heavy/test-only transitive deps that raise security scanner warnings and are not needed for headless junit runs
+		exclude group: 'io.github.bonigarcia', module: 'webdrivermanager'
+		exclude group: 'commons-beanutils', module: 'commons-beanutils'
+		exclude group: 'org.jsoup', module: 'jsoup'
+		exclude group: 'com.thoughtworks.xstream', module: 'xstream'
+		exclude group: 'org.apache.commons', module: 'commons-compress'
+		exclude group: 'org.apache.pdfbox', module: 'pdfbox'
+		exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+	}
+	testImplementation('net.serenity-bdd:serenity-spring:3.7.0') {
+		exclude group: 'io.github.bonigarcia', module: 'webdrivermanager'
+		exclude group: 'commons-beanutils', module: 'commons-beanutils'
+		exclude group: 'org.jsoup', module: 'jsoup'
+		exclude group: 'com.thoughtworks.xstream', module: 'xstream'
+		exclude group: 'org.apache.commons', module: 'commons-compress'
+		exclude group: 'org.apache.pdfbox', module: 'pdfbox'
+		exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+	}
 
 	// Cucumber BDD dependencies for smoke tests (DataTable support + JUnit Platform engine + Spring integration)
 	testImplementation 'io.cucumber:cucumber-java:7.14.0'
 	testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.14.0'
 	testImplementation 'io.cucumber:cucumber-spring:7.14.0'
+
 }
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+// Force JUnit 5.9.2 / JUnit Platform 1.9.2 for all configurations to avoid the NoSuchMethodError
+configurations.all {
+    resolutionStrategy.force(
+            'org.junit.jupiter:junit-jupiter-api:5.9.2',
+            'org.junit.jupiter:junit-jupiter-engine:5.9.2',
+            'org.junit.jupiter:junit-jupiter:5.9.2',
+            'org.junit.platform:junit-platform-launcher:1.9.2',
+            'org.junit.platform:junit-platform-engine:1.9.2',
+            'org.junit.platform:junit-platform-commons:1.9.2'
+    )
 }
+
+// Remove the explicit exclusion of Serenity test runtime dependencies so they're available at test runtime
+// (previously we excluded net.serenity-bdd:serenity-junit5 and serenity-spring; removing that to restore working Serenity)
 
 tasks.named('test') {
     systemProperty "spring.profiles.active", "test"
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform() {
+        // Ensure smoke scenarios are not executed by the main `test` task
+        excludeTags 'smoke'
+    }
 }
 
 // Add smokeTest task that runs only scenarios tagged with @smoke
+// Configure it to use the test source set outputs and classpath so it finds compiled tests
 tasks.register('smokeTest', Test) {
     group = 'verification'
-    description = 'Runs Cucumber BDD scenarios tagged with @smoke'
+    description = 'Runs JUnit tests tagged with @smoke (smoke tests)'
+
+    // Use compiled test classes and runtime classpath from the main test sourceSet
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
     useJUnitPlatform() {
         includeTags 'smoke'
     }
+
+    // Use the 'test' profile for the run
     systemProperty "spring.profiles.active", "test"
+
+    // Ensure Serenity writes its output to the desired directory for this run
+    systemProperty 'serenity.outputDirectory', file("target/site/serenity").absolutePath
+
+    // Place Gradle's JUnit XML and HTML reports into dedicated locations for smoke tests
+    reports {
+        junitXml.outputLocation = layout.buildDirectory.dir("test-results/smokeTest")
+        html.outputLocation = layout.buildDirectory.dir("reports/smokeTest")
+    }
+
+    // Keep the aggregate step to run after smoke tests
+    finalizedBy tasks.named('aggregate')
+
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+        exceptionFormat "FULL"
+        showStandardStreams = false
+    }
+}
+
+// Copy smokeTest JUnit XML results into directories Serenity can read before aggregation
+tasks.register('copySmokeResultsForSerenity', Copy) {
+    description = 'Copy JUnit XML results from build/test-results/smokeTest into directories used by Serenity aggregate'
+
+    from(layout.buildDirectory.dir('test-results/smokeTest')) {
+        include '**/*.xml'
+    }
+
+    into(layout.buildDirectory.dir('serenity-input/test-results'))
+
+    // Ensure smokeTest runs before copying results
+    dependsOn tasks.named('smokeTest')
+
+    doLast {
+        def src = layout.buildDirectory.dir('test-results/smokeTest').get().asFile
+        if (!src.exists()) {
+            logger.lifecycle("No JUnit XML found at ${src}, skipping additional copies")
+            return
+        }
+
+        // copy into target/site/serenity/junit
+        def serenityJunitDir = file('target/site/serenity/junit')
+        if (!serenityJunitDir.exists()) {
+            serenityJunitDir.mkdirs()
+        }
+        copy {
+            from src
+            include '**/*.xml'
+            into serenityJunitDir
+        }
+
+        // copy into target/site/serenity root
+        def serenityRootDir = file('target/site/serenity')
+        copy {
+            from src
+            include '**/*.xml'
+            into serenityRootDir
+        }
+
+        // copy into build/serenity
+        def buildSerenityDir = layout.buildDirectory.dir('serenity').get().asFile
+        if (!buildSerenityDir.exists()) {
+            buildSerenityDir.mkdirs()
+        }
+        copy {
+            from src
+            include '**/*.xml'
+            into buildSerenityDir
+        }
+
+        logger.lifecycle("Copied smoke JUnit XML results to ${serenityJunitDir}, ${serenityRootDir} and ${buildSerenityDir}")
+    }
+
+    onlyIf { layout.buildDirectory.dir('test-results/smokeTest').get().asFile.exists() }
+}
+
+// Make aggregate depend on copied smoke results so Serenity picks them up
+tasks.named('aggregate') {
+    dependsOn(tasks.named('copySmokeResultsForSerenity'))
 }
 
 serenity {
@@ -96,4 +223,37 @@ serenity {
 
 bootJar {
     archiveFileName = "activity-service-app-build.jar"
+}
+
+// Remove the exclusion so Serenity runtime is available for test execution
+// After aggregate, copy the smokeTest HTML into the Serenity site and add a landing page
+tasks.register('integrateSmokeHtmlWithSerenity') {
+    description = 'Copy smokeTest HTML report into the Serenity site and create a landing page linking to it.'
+    dependsOn tasks.named('smokeTest')
+    doLast {
+        def reportSourceDir = layout.buildDirectory.dir('reports/smokeTest').get().asFile
+        def targetDir = file('target/site/serenity/smoke-tests')
+        if (!reportSourceDir.exists()) {
+            logger.lifecycle("No smokeTest HTML report at ${reportSourceDir}; nothing to copy")
+            return
+        }
+        if (!targetDir.exists()) targetDir.mkdirs()
+        copy {
+            from reportSourceDir
+            include '**/*'
+            into targetDir
+        }
+        def landing = file('target/site/serenity/smoke-tests.html')
+        landing.parentFile.mkdirs()
+        landing.text = "<html><head><meta charset=\"utf-8\"><title>Smoke Test Report</title></head><body>" +
+            "<h2>Smoke Test Report</h2>" +
+            "<p><a href=\"smoke-tests/index.html\">Open smokeTest HTML report</a></p>" +
+            "</body></html>"
+        logger.lifecycle("Copied smokeTest HTML into ${targetDir} and created smoke-tests.html")
+    }
+}
+
+// Ensure integrateSmokeHtmlWithSerenity runs after aggregate so the Serenity site contains the link
+tasks.named('aggregate') {
+    finalizedBy(tasks.named('integrateSmokeHtmlWithSerenity'))
 }

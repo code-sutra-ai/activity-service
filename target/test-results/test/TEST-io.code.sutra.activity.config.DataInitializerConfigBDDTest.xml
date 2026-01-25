@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.code.sutra.activity.config.DataInitializerConfigBDDTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-01-25T01:55:25.268Z" hostname="Saurabhs-MacBook-Pro-3.local" time="0.002">
+  <properties/>
+  <testcase name="Given context loads, when DataInitializer bean is present, then it should not be null" classname="io.code.sutra.activity.config.DataInitializerConfigBDDTest" time="0.002"/>
+  <system-out><![CDATA[2026-01-24T20:55:25.263-05:00  INFO 74088 --- [activity-service] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.code.sutra.activity.config.DataInitializerConfigBDDTest]: DataInitializerConfigBDDTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-01-24 20:55:25.263 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Could not detect default configuration classes for test class [io.code.sutra.activity.config.DataInitializerConfigBDDTest]: DataInitializerConfigBDDTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+{"@timestamp":"2026-01-24T20:55:25.263084-05:00","@version":"1","message":"Could not detect default configuration classes for test class [io.code.sutra.activity.config.DataInitializerConfigBDDTest]: DataInitializerConfigBDDTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.","logger_name":"org.springframework.test.context.support.AnnotationConfigContextLoaderUtils","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T20:55:25.266-05:00  INFO 74088 --- [activity-service] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.code.sutra.activity.ActivityApplication for test class io.code.sutra.activity.config.DataInitializerConfigBDDTest
+2026-01-24 20:55:25.266 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Found @SpringBootConfiguration io.code.sutra.activity.ActivityApplication for test class io.code.sutra.activity.config.DataInitializerConfigBDDTest
+{"@timestamp":"2026-01-24T20:55:25.266176-05:00","@version":"1","message":"Found @SpringBootConfiguration io.code.sutra.activity.ActivityApplication for test class io.code.sutra.activity.config.DataInitializerConfigBDDTest","logger_name":"org.springframework.boot.test.context.SpringBootTestContextBootstrapper","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

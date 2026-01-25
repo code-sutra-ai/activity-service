@@ -1,16 +1,16 @@
 package io.code.sutra.activity.controller;
 
 import io.code.sutra.activity.controller.HelloWorld;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(MockitoExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Tag("smoke")
+@ExtendWith(SerenityJUnit5Extension.class)
 class HelloWorldControllerBDDTest {
 
     @Test
