@@ -1,0 +1,4 @@
+m02:50:04.556 [Test worker] INFO io.code.sutra.activity.controller.HelloWorld -- Hello World endpoint invoked
+±02:50:04.776 [Test worker] INFO io.code.sutra.activity.service.TaskService -- createTask called with input -> id: null, title: T1, status: pending, assignee: null, service: svc
+}02:50:04.776 [Test worker] INFO io.code.sutra.activity.service.TaskService -- Assigned generated id 1 to task before persist
+g02:50:04.780 [Test worker] INFO io.code.sutra.activity.service.TaskService -- Task persisted with id 1

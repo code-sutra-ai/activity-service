@@ -1,7 +1,10 @@
 package io.code.sutra.activity.controller;
 
+import io.code.sutra.activity.config.Constants;
 import io.code.sutra.activity.dto.AssignRequest;
+import io.code.sutra.activity.dto.TaskRequest;
 import io.code.sutra.activity.entity.Task;
+import io.code.sutra.activity.mapper.TaskMapper;
 import io.code.sutra.activity.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,16 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/tasks")
+@RequestMapping(Constants.TASKS_BASE)
 public class TaskController {
 
     private final TaskService taskService;
@@ -37,7 +39,8 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        log.info("Fetching task with id: {}", id);       return taskService.getTaskById(id)
+        log.info("Fetching task with id: {}", id);
+        return taskService.getTaskById(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
@@ -51,18 +54,8 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createTask(@RequestBody Task task) {
-        // Validate required fields: title, status, service
-        List<String> missing = new ArrayList<>();
-        if (task == null) {
-            return ResponseEntity.badRequest().body(Map.of("error", "request body is required"));
-        }
-        if (task.getTitle() == null || task.getTitle().isBlank()) missing.add("title");
-        if (task.getStatus() == null || task.getStatus().isBlank()) missing.add("status");
-        if (!missing.isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "missing required fields", "missing", missing));
-        }
-
+    public ResponseEntity<?> createTask(@Valid @RequestBody TaskRequest req) {
+        Task task = TaskMapper.toEntity(req);
         Task created = taskService.createTask(task);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
@@ -74,8 +67,9 @@ public class TaskController {
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(
             @PathVariable Long id,
-            @RequestBody Task task) {
-        log.info("Updating task with id: {} task: {}", id,task);
+            @RequestBody TaskRequest taskReq) {
+        log.info("Updating task with id: {} task: {}", id, taskReq);
+        Task task = TaskMapper.toEntity(taskReq);
         Task updated = taskService.updateTask(id, task);
         if (updated != null) {
             return ResponseEntity.ok(updated);
@@ -84,11 +78,8 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}/assign")
-    public ResponseEntity<Task> assignTask(@PathVariable Long id, @RequestBody AssignRequest req) {
+    public ResponseEntity<Task> assignTask(@PathVariable Long id, @Valid @RequestBody AssignRequest req) {
         log.info("Assigning task with id: {} to user: {}", id, req.getAssignee());
-        if (req == null || req.getAssignee() == null || req.getAssignee().isBlank()) {
-            return ResponseEntity.badRequest().build();
-        }
         Task updated = taskService.assignTask(id, req.getAssignee());
         if (updated != null) {
             return ResponseEntity.ok(updated);

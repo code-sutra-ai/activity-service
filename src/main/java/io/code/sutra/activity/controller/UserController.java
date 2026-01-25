@@ -1,6 +1,9 @@
 package io.code.sutra.activity.controller;
 
+import io.code.sutra.activity.config.Constants;
+import io.code.sutra.activity.dto.UserRequest;
 import io.code.sutra.activity.entity.User;
+import io.code.sutra.activity.mapper.UserMapper;
 import io.code.sutra.activity.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,32 +12,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import jakarta.validation.Valid;
 
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(Constants.USERS_BASE)
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/api/users")
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         log.info("Fetching all users");
-        List<User> allUsers = userService.getAllUsers();
-        log.info("Retrieved {}", allUsers.toString());
-        return ResponseEntity.ok(allUsers);
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping("/api/users")
-    public ResponseEntity<?> addUser(@RequestBody User user) {
+    @PostMapping
+    public ResponseEntity<?> addUser(@Valid @RequestBody UserRequest userReq) {
         try {
-            log.info("Received request to add user: {}", user);
-            if (user == null || user.getName() == null || user.getName().isBlank()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", "name is required"));
-            }
-            User created = userService.createUser(user.getName().trim());
+            log.info("Received request to add user: {}", userReq);
+            User created = userService.createUser(userReq.getName().trim());
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("name", created.getName(), "id", created.getId()));
         } catch (RuntimeException e) {
             log.error("Error creating user", e);
@@ -43,18 +42,10 @@ public class UserController {
         }
     }
 
-    @PutMapping("/api/users/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userReq) {
         try {
-            log.info("Received request to update user id={} with data: {}", id, user);
-            if (user == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "request body is required"));
-            }
-            // Ensure name is present if provided and not blank
-            if (user.getName() != null && user.getName().isBlank()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "name cannot be blank"));
-            }
-            User updated = userService.updateUser(id, user);
+            User updated = userService.updateUser(id, UserMapper.toEntity(userReq));
             if (updated == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
             }
@@ -65,9 +56,8 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/api/users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        log.info("Received request to delete user id={}", id);
         try {
             boolean deleted = userService.deleteUser(id);
             if (deleted) {

@@ -1,0 +1,5 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"User service BDD test","Given no users, when getAllUsers is called, then return empty list","SUCCESS","2026-01-25T02:50:04.813149-05:00[America/New_York]","0.0","0.02"
+"User service BDD test","When creating a user by name, saved user is returned","SUCCESS","2026-01-25T02:50:04.840176-05:00[America/New_York]","0.0","0.0"
+"User service BDD test","Updating an existing user applies changes","SUCCESS","2026-01-25T02:50:04.845483-05:00[America/New_York]","0.0","0.0"
+"User service BDD test","Deleting an existing user returns true","SUCCESS","2026-01-25T02:50:04.851065-05:00[America/New_York]","0.0","0.0"
