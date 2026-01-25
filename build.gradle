@@ -67,8 +67,11 @@ dependencies {
 	testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
 	testImplementation 'org.assertj:assertj-core:3.24.2'
 
-	// Serenity JUnit5 and Spring integration (restore runtime listener so aggregate can see tests)
-	testImplementation('net.serenity-bdd:serenity-junit5:3.7.0') {
+	// Pact JVM consumer for creating consumer-driven contracts
+	testImplementation 'au.com.dius.pact.consumer:junit5:4.4.3'
+
+    // Serenity JUnit5 and Spring integration (restore runtime listener so aggregate can see tests)
+    testImplementation('net.serenity-bdd:serenity-junit5:3.7.0') {
 		// Exclude heavy/test-only transitive deps that raise security scanner warnings and are not needed for headless junit runs
 		exclude group: 'io.github.bonigarcia', module: 'webdrivermanager'
 		exclude group: 'commons-beanutils', module: 'commons-beanutils'
@@ -112,6 +115,8 @@ configurations.all {
 
 tasks.named('test') {
     systemProperty "spring.profiles.active", "test"
+    // Ensure Pact consumer tests write pact files into the repository 'pacts' folder
+    systemProperty 'pact.rootDir', file('pacts').absolutePath
 }
 
 test {
