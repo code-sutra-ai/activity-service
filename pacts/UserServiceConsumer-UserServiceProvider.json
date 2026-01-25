@@ -1,0 +1,23 @@
+{
+  "consumer": { "name": "UserServiceConsumer" },
+  "provider": { "name": "UserServiceProvider" },
+  "interactions": [
+    {
+      "description": "a request to create a user",
+      "providerState": "provider accepts a new user",
+      "request": {
+        "method": "POST",
+        "path": "/api/users",
+        "headers": { "Content-Type": "application/json" },
+        "body": { "name": "alice" }
+      },
+      "response": {
+        "status": 201,
+        "headers": { "Content-Type": "application/json" },
+        "body": { "id": 101, "name": "alice" }
+      }
+    }
+  ],
+  "metadata": { "pactSpecification": { "version": "3.0.0" } }
+}
+
