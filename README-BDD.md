@@ -38,6 +38,14 @@ Run the image:
 
 ---
 
+# Features -> Business mapping
+
+A detailed mapping of BDD feature files to business requirements is available in `FEATURES_BUSINESS_REQUIREMENTS.md`. This file lists each feature, the business requirement it verifies, example DataTables, and where to find generated reports.
+
+See: FEATURES_BUSINESS_REQUIREMENTS.md
+
+---
+
 # Sample data JSON
 
 The application ships with a `DataInitializer` that pre-populates a few users and tasks when the application starts in a local/test profile. Below are example JSON payloads you can use to create data via the HTTP API (useful for manual testing or to seed environments).

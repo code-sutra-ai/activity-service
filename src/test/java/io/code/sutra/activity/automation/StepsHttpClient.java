@@ -80,6 +80,24 @@ public class StepsHttpClient {
         }
     }
 
+    @Given("the following users exist:")
+    public void the_following_users_exist(DataTable table) {
+        List<Map<String, String>> rows = table.asMaps(String.class, String.class);
+        for (Map<String, String> row : rows) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            String json = String.format("{ \"name\": \"%s\" }", row.get("name"));
+            HttpEntity<String> entity = new HttpEntity<>(json, headers);
+            latestResponse = restTemplate.postForEntity(url("/users"), entity, String.class);
+            assertThat(latestResponse.getStatusCode()).isIn(HttpStatus.CREATED, HttpStatus.OK);
+        }
+    }
+
+    @When("I DELETE {string}")
+    public void i_delete(String path) {
+        latestResponse = restTemplate.exchange(url(path), HttpMethod.DELETE, null, String.class);
+    }
+
     @When("I POST {string} with the above table")
     public void i_post_with_above_table(String path, DataTable table) {
         List<Map<String, String>> rows = table.asMaps(String.class, String.class);
