@@ -1,2 +1,0 @@
-"Story","Title","Result","Date","Stability","Duration (s)"
-"Hello world controller BDD test","Given direct call to hello(), then return 200 OK","SUCCESS","2026-01-24T21:57:34.580356-05:00[America/New_York]","0.0","0.03"
