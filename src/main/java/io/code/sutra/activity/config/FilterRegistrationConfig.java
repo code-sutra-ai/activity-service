@@ -11,8 +11,7 @@ public class FilterRegistrationConfig {
     @Bean
     public FilterRegistrationBean<EchoCorsFilter> echoCorsFilterRegistration(EchoCorsFilter filter) {
         FilterRegistrationBean<EchoCorsFilter> reg = new FilterRegistrationBean<>(filter);
-        // Run last so this filter can override any Access-Control headers set by earlier filters
-        reg.setOrder(Ordered.LOWEST_PRECEDENCE);
+        reg.setOrder(Ordered.HIGHEST_PRECEDENCE);
         reg.addUrlPatterns("/*");
         return reg;
     }

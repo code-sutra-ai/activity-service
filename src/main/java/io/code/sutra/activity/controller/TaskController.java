@@ -35,13 +35,14 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id)
+        log.info("Fetching task with id: {}", id);       return taskService.getTaskById(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/assignee/{name}")
     public ResponseEntity<List<Task>> findByAssignee(@PathVariable String name) {
+        log.info("Fetching tasks for assignee: {}", name);
         List<Task> allTasks = taskService.getTaskByAssignee(name.toLowerCase());
         log.info("Retrieved {}", allTasks.toString());
         return ResponseEntity.ok(allTasks);
@@ -61,6 +62,7 @@ public class TaskController {
     public ResponseEntity<Task> updateTask(
             @PathVariable Long id,
             @RequestBody Task task) {
+        log.info("Updating task with id: {} task: {}", id,task);
         Task updated = taskService.updateTask(id, task);
         if (updated != null) {
             return ResponseEntity.ok(updated);
@@ -70,6 +72,7 @@ public class TaskController {
 
     @PatchMapping("/{id}/assign")
     public ResponseEntity<Task> assignTask(@PathVariable Long id, @RequestBody AssignRequest req) {
+        log.info("Assigning task with id: {} to user: {}", id, req.getAssignee());
         if (req == null || req.getAssignee() == null || req.getAssignee().isBlank()) {
             return ResponseEntity.badRequest().build();
         }
