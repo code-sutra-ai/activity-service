@@ -49,7 +49,14 @@ public class UserController {
             if (updated == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
             }
-            return ResponseEntity.ok(Map.of("id", updated.getId(), "name", updated.getName(), "email", updated.getEmail(), "phone", updated.getPhone(), "notes", updated.getNotes()));
+            // Build response map carefully to avoid Map.of(null) NPEs
+            Map<String, Object> resp = new java.util.HashMap<>();
+            resp.put("id", updated.getId());
+            resp.put("name", updated.getName());
+            if (updated.getEmail() != null) resp.put("email", updated.getEmail());
+            if (updated.getPhone() != null) resp.put("phone", updated.getPhone());
+            if (updated.getNotes() != null) resp.put("notes", updated.getNotes());
+            return ResponseEntity.ok(resp);
         } catch (RuntimeException e) {
             log.error("Error updating user id={}", id, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
