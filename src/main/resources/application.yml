@@ -46,8 +46,8 @@ management:
         enabled: true
 
 # CORS configuration (leave blank to disable global CORS; set comma-separated origins to enable)
-app:
-  cors:
+#app:
+#  cors:
     # Leave empty in production or when you prefer no global CORS mapping. Example: "https://app.example.com,https://admin.example.com"
-    allowed-origins: "*"
-    allow-credentials: false
+#    allowed-origins: "*"
+#    allow-credentials: false

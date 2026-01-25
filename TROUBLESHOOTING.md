@@ -97,6 +97,55 @@ This guide helps you quickly diagnose and resolve common issues with unit and in
   ```
   *Significance:* Ensures the correct Spring profile and configuration are used during test execution, avoiding environment-specific failures.
 
+## CORS Troubleshooting (React + Browser)
+
+If your React app on `http://localhost:5173` cannot call the backend and you see `Network Error` or CORS errors in the browser, remember:
+
+- CORS is enforced by browsers for JavaScript (fetch, axios) calls — it is not enforced when you directly open an URL in the browser address bar or use curl.
+- The server must respond to preflight `OPTIONS` requests and include the proper `Access-Control-*` response headers.
+
+What the backend must send for `/api/tasks` responses
+
+- Access-Control-Allow-Origin: http://localhost:5173
+- Access-Control-Allow-Credentials: true
+
+These headers must be present both on the preflight (`OPTIONS`) response and the actual response (GET/POST/etc.).
+
+Quick verification with curl
+
+1) Preflight (OPTIONS):
+
+```bash
+curl -i -X OPTIONS 'http://localhost:8080/api/tasks' \
+  -H 'Origin: http://localhost:5173' \
+  -H 'Access-Control-Request-Method: GET' -v
+```
+
+Expect `Access-Control-Allow-Origin: http://localhost:5173` and `Access-Control-Allow-Credentials: true` in the response headers.
+
+2) Real request (GET):
+
+```bash
+curl -i 'http://localhost:8080/api/tasks' -H 'Origin: http://localhost:5173' -v
+```
+
+Expect the same headers on the response.
+
+Browser (React) notes
+
+- If you use cookies or credentials, send requests with credentials enabled from React:
+
+  - fetch: `fetch(url, { credentials: 'include', ... })`
+  - axios: `axios.get(url, { withCredentials: true })`
+
+- The server must NOT return `Access-Control-Allow-Origin: *` when `Access-Control-Allow-Credentials: true` is present — browsers will reject that combination. Instead return the explicit origin string (e.g., `http://localhost:5173`).
+
+If you still see issues
+
+- Check the browser DevTools Network tab. Inspect the `OPTIONS` preflight request — status must be 200 and the appropriate `Access-Control-*` headers must be present.
+- Confirm the request path matches `/api/tasks` (our filter applies specifically to that path for the production header requirement).
+- Ensure no other filters or CDNs are rewriting or removing CORS headers.
+
 ## When to Ask for Help
 - If you see persistent `ApplicationContext` errors after following these steps, check for recent changes to configuration or dependencies.
 - If unsure, share the error message and your recent changes with your team or in a pull request for review.

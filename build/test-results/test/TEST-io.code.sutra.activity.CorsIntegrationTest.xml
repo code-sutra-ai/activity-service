@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.code.sutra.activity.CorsIntegrationTest" tests="2" skipped="0" failures="2" errors="0" timestamp="2026-01-25T00:29:24.868Z" hostname="Saurabhs-MacBook-Pro-3.local" time="0.097">
+  <properties/>
+  <testcase name="get_with_origin_should_return_access_control_allow_origin()" classname="io.code.sutra.activity.CorsIntegrationTest" time="0.091">
+    <failure message="java.lang.AssertionError: &#10;Expecting actual not to be null" type="java.lang.AssertionError">java.lang.AssertionError: 
+Expecting actual not to be null
+	at io.code.sutra.activity.CorsIntegrationTest.get_with_origin_should_return_access_control_allow_origin(CorsIntegrationTest.java:61)
+</failure>
+  </testcase>
+  <testcase name="preflight_should_return_cors_headers()" classname="io.code.sutra.activity.CorsIntegrationTest" time="0.003">
+    <failure message="java.lang.AssertionError: &#10;Expecting actual not to be null" type="java.lang.AssertionError">java.lang.AssertionError: 
+Expecting actual not to be null
+	at io.code.sutra.activity.CorsIntegrationTest.preflight_should_return_cors_headers(CorsIntegrationTest.java:43)
+</failure>
+  </testcase>
+  <system-out><![CDATA[19:29:21.682 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [io.code.sutra.activity.CorsIntegrationTest]: CorsIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+19:29:21.724 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration io.code.sutra.activity.ActivityApplication for test class io.code.sutra.activity.CorsIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-24T19:29:22.093-05:00  INFO 70990 --- [activity-service] [    Test worker] i.c.sutra.activity.CorsIntegrationTest   : Starting CorsIntegrationTest using Java 24.0.1 with PID 70990 (started by saurabhchakote in /Users/saurabhchakote/Local/Technoration/services/activity-service)
+2026-01-24 19:29:22.093 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Starting CorsIntegrationTest using Java 24.0.1 with PID 70990 (started by saurabhchakote in /Users/saurabhchakote/Local/Technoration/services/activity-service)
+{"@timestamp":"2026-01-24T19:29:22.093265-05:00","@version":"1","message":"Starting CorsIntegrationTest using Java 24.0.1 with PID 70990 (started by saurabhchakote in /Users/saurabhchakote/Local/Technoration/services/activity-service)","logger_name":"io.code.sutra.activity.CorsIntegrationTest","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:22.099-05:00  INFO 70990 --- [activity-service] [    Test worker] i.c.sutra.activity.CorsIntegrationTest   : The following 1 profile is active: "test"
+2026-01-24 19:29:22.099 [Test worker] INFO  [traceId=,spanId=,correlationId=] - The following 1 profile is active: "test"
+{"@timestamp":"2026-01-24T19:29:22.099939-05:00","@version":"1","message":"The following 1 profile is active: \"test\"","logger_name":"io.code.sutra.activity.CorsIntegrationTest","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:22.523-05:00  INFO 70990 --- [activity-service] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-24 19:29:22.523 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+{"@timestamp":"2026-01-24T19:29:22.523367-05:00","@version":"1","message":"Bootstrapping Spring Data JPA repositories in DEFAULT mode.","logger_name":"org.springframework.data.repository.config.RepositoryConfigurationDelegate","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:22.575-05:00  INFO 70990 --- [activity-service] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 47 ms. Found 2 JPA repository interfaces.
+2026-01-24 19:29:22.575 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Finished Spring Data repository scanning in 47 ms. Found 2 JPA repository interfaces.
+{"@timestamp":"2026-01-24T19:29:22.575082-05:00","@version":"1","message":"Finished Spring Data repository scanning in 47 ms. Found 2 JPA repository interfaces.","logger_name":"org.springframework.data.repository.config.RepositoryConfigurationDelegate","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:22.723-05:00  INFO 70990 --- [activity-service] [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=85f8f11d-a531-3f96-bce2-0dec11a26e82
+2026-01-24 19:29:22.723 [Test worker] INFO  [traceId=,spanId=,correlationId=] - BeanFactory id=85f8f11d-a531-3f96-bce2-0dec11a26e82
+{"@timestamp":"2026-01-24T19:29:22.72368-05:00","@version":"1","message":"BeanFactory id=85f8f11d-a531-3f96-bce2-0dec11a26e82","logger_name":"org.springframework.cloud.context.scope.GenericScope","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:22.899-05:00  INFO 70990 --- [activity-service] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-24 19:29:22.899 [Test worker] INFO  [traceId=,spanId=,correlationId=] - HikariPool-1 - Starting...
+{"@timestamp":"2026-01-24T19:29:22.899329-05:00","@version":"1","message":"HikariPool-1 - Starting...","logger_name":"com.zaxxer.hikari.HikariDataSource","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:22.961-05:00  INFO 70990 --- [activity-service] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:fc4e0ae0-fa09-465e-ba38-69c6644938e3 user=SA
+2026-01-24 19:29:22.961 [Test worker] INFO  [traceId=,spanId=,correlationId=] - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:fc4e0ae0-fa09-465e-ba38-69c6644938e3 user=SA
+{"@timestamp":"2026-01-24T19:29:22.961701-05:00","@version":"1","message":"HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:fc4e0ae0-fa09-465e-ba38-69c6644938e3 user=SA","logger_name":"com.zaxxer.hikari.pool.HikariPool","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:22.962-05:00  INFO 70990 --- [activity-service] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-24 19:29:22.962 [Test worker] INFO  [traceId=,spanId=,correlationId=] - HikariPool-1 - Start completed.
+{"@timestamp":"2026-01-24T19:29:22.962673-05:00","@version":"1","message":"HikariPool-1 - Start completed.","logger_name":"com.zaxxer.hikari.HikariDataSource","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:23.023-05:00  INFO 70990 --- [activity-service] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-24 19:29:23.023 [Test worker] INFO  [traceId=,spanId=,correlationId=] - HHH008540: Processing PersistenceUnitInfo [name: default]
+{"@timestamp":"2026-01-24T19:29:23.023427-05:00","@version":"1","message":"HHH008540: Processing PersistenceUnitInfo [name: default]","logger_name":"org.hibernate.orm.jpa","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:23.045-05:00  INFO 70990 --- [activity-service] [    Test worker] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-24 19:29:23.045 [Test worker] INFO  [traceId=,spanId=,correlationId=] - HHH000001: Hibernate ORM core version 7.2.0.Final
+{"@timestamp":"2026-01-24T19:29:23.04588-05:00","@version":"1","message":"HHH000001: Hibernate ORM core version 7.2.0.Final","logger_name":"org.hibernate.orm.core","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:23.173-05:00  INFO 70990 --- [activity-service] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-24 19:29:23.173 [Test worker] INFO  [traceId=,spanId=,correlationId=] - No LoadTimeWeaver setup: ignoring JPA class transformer
+{"@timestamp":"2026-01-24T19:29:23.173292-05:00","@version":"1","message":"No LoadTimeWeaver setup: ignoring JPA class transformer","logger_name":"org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:23.206-05:00  INFO 70990 --- [activity-service] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:fc4e0ae0-fa09-465e-ba38-69c6644938e3]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: FC4E0AE0-FA09-465E-BA38-69C6644938E3/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-24 19:29:23.206 [Test worker] INFO  [traceId=,spanId=,correlationId=] - HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:fc4e0ae0-fa09-465e-ba38-69c6644938e3]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: FC4E0AE0-FA09-465E-BA38-69C6644938E3/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+{"@timestamp":"2026-01-24T19:29:23.206081-05:00","@version":"1","message":"HHH10001005: Database info:\n\tDatabase JDBC URL [jdbc:h2:mem:fc4e0ae0-fa09-465e-ba38-69c6644938e3]\n\tDatabase driver: H2 JDBC Driver\n\tDatabase dialect: H2Dialect\n\tDatabase version: 2.4.240\n\tDefault catalog/schema: FC4E0AE0-FA09-465E-BA38-69C6644938E3/PUBLIC\n\tAutocommit mode: undefined/unknown\n\tIsolation level: READ_COMMITTED [default READ_COMMITTED]\n\tJDBC fetch size: 100\n\tPool: DataSourceConnectionProvider\n\tMinimum pool size: undefined/unknown\n\tMaximum pool size: undefined/unknown","logger_name":"org.hibernate.orm.connections.pooling","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:23.479-05:00  INFO 70990 --- [activity-service] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-24 19:29:23.479 [Test worker] INFO  [traceId=,spanId=,correlationId=] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+{"@timestamp":"2026-01-24T19:29:23.479513-05:00","@version":"1","message":"HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)","logger_name":"org.hibernate.orm.core","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:23.490-05:00  INFO 70990 --- [activity-service] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-24 19:29:23.490 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+{"@timestamp":"2026-01-24T19:29:23.490165-05:00","@version":"1","message":"Initialized JPA EntityManagerFactory for persistence unit 'default'","logger_name":"org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:23.560-05:00  INFO 70990 --- [activity-service] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-24 19:29:23.560 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Hibernate is in classpath; If applicable, HQL parser will be used.
+{"@timestamp":"2026-01-24T19:29:23.560697-05:00","@version":"1","message":"Hibernate is in classpath; If applicable, HQL parser will be used.","logger_name":"org.springframework.data.jpa.repository.query.QueryEnhancerFactories","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:23.805-05:00  WARN 70990 --- [activity-service] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-24 19:29:23.805 [Test worker] WARN  [traceId=,spanId=,correlationId=] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+{"@timestamp":"2026-01-24T19:29:23.80577-05:00","@version":"1","message":"spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning","logger_name":"org.springframework.boot.jpa.autoconfigure.JpaBaseConfiguration$JpaWebConfiguration","thread_name":"Test worker","level":"WARN","level_value":30000,"app":"activity-service"}
+2026-01-24T19:29:24.563-05:00  WARN 70990 --- [activity-service] [    Test worker] i.m.core.instrument.MeterRegistry        : This Gauge has been already registered (MeterId{name='resilience4j.circuitbreaker.state', tags=[tag(group=none),tag(name=default),tag(state=disabled)]}), the registration will be ignored. Note that subsequent logs will be logged at debug level.
+2026-01-24 19:29:24.563 [Test worker] WARN  [traceId=,spanId=,correlationId=] - This Gauge has been already registered (MeterId{name='resilience4j.circuitbreaker.state', tags=[tag(group=none),tag(name=default),tag(state=disabled)]}), the registration will be ignored. Note that subsequent logs will be logged at debug level.
+{"@timestamp":"2026-01-24T19:29:24.563023-05:00","@version":"1","message":"This Gauge has been already registered (MeterId{name='resilience4j.circuitbreaker.state', tags=[tag(group=none),tag(name=default),tag(state=disabled)]}), the registration will be ignored. Note that subsequent logs will be logged at debug level.","logger_name":"io.micrometer.core.instrument.MeterRegistry","thread_name":"Test worker","level":"WARN","level_value":30000,"app":"activity-service"}
+2026-01-24T19:29:24.581-05:00  INFO 70990 --- [activity-service] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoints beneath base path '/actuator'
+2026-01-24 19:29:24.581 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Exposing 3 endpoints beneath base path '/actuator'
+{"@timestamp":"2026-01-24T19:29:24.581511-05:00","@version":"1","message":"Exposing 3 endpoints beneath base path '/actuator'","logger_name":"org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:24.614-05:00  INFO 70990 --- [activity-service] [    Test worker] i.c.sutra.activity.CorsIntegrationTest   : Started CorsIntegrationTest in 2.773 seconds (process running for 3.621)
+2026-01-24 19:29:24.614 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Started CorsIntegrationTest in 2.773 seconds (process running for 3.621)
+{"@timestamp":"2026-01-24T19:29:24.614523-05:00","@version":"1","message":"Started CorsIntegrationTest in 2.773 seconds (process running for 3.621)","logger_name":"io.code.sutra.activity.CorsIntegrationTest","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:24.917-05:00  INFO 70990 --- [activity-service] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-24 19:29:24.917 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Initializing Spring TestDispatcherServlet ''
+{"@timestamp":"2026-01-24T19:29:24.917359-05:00","@version":"1","message":"Initializing Spring TestDispatcherServlet ''","logger_name":"org.springframework.boot.test.mock.web.SpringBootMockServletContext","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:24.917-05:00  INFO 70990 --- [activity-service] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-24 19:29:24.917 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Initializing Servlet ''
+{"@timestamp":"2026-01-24T19:29:24.917709-05:00","@version":"1","message":"Initializing Servlet ''","logger_name":"org.springframework.test.web.servlet.TestDispatcherServlet","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:24.918-05:00  INFO 70990 --- [activity-service] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-01-24 19:29:24.918 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Completed initialization in 1 ms
+{"@timestamp":"2026-01-24T19:29:24.918333-05:00","@version":"1","message":"Completed initialization in 1 ms","logger_name":"org.springframework.test.web.servlet.TestDispatcherServlet","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:24.932-05:00  INFO 70990 --- [activity-service] [    Test worker] i.c.s.activity.controller.HelloWorld     : Hello World endpoint invoked
+2026-01-24 19:29:24.932 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Hello World endpoint invoked
+{"@timestamp":"2026-01-24T19:29:24.932002-05:00","@version":"1","message":"Hello World endpoint invoked","logger_name":"io.code.sutra.activity.controller.HelloWorld","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:24.963-05:00  INFO 70990 --- [activity-service] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-24 19:29:24.963 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Initializing Spring TestDispatcherServlet ''
+{"@timestamp":"2026-01-24T19:29:24.963242-05:00","@version":"1","message":"Initializing Spring TestDispatcherServlet ''","logger_name":"org.springframework.boot.test.mock.web.SpringBootMockServletContext","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:24.963-05:00  INFO 70990 --- [activity-service] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-24 19:29:24.963 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Initializing Servlet ''
+{"@timestamp":"2026-01-24T19:29:24.963502-05:00","@version":"1","message":"Initializing Servlet ''","logger_name":"org.springframework.test.web.servlet.TestDispatcherServlet","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+2026-01-24T19:29:24.963-05:00  INFO 70990 --- [activity-service] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-01-24 19:29:24.963 [Test worker] INFO  [traceId=,spanId=,correlationId=] - Completed initialization in 0 ms
+{"@timestamp":"2026-01-24T19:29:24.963981-05:00","@version":"1","message":"Completed initialization in 0 ms","logger_name":"org.springframework.test.web.servlet.TestDispatcherServlet","thread_name":"Test worker","level":"INFO","level_value":20000,"app":"activity-service"}
+]]></system-out>
+  <system-err><![CDATA[19:29:21,981 |-WARN in ch.qos.logback.core.joran.action.ConversionRuleAction - [converterClass] attribute is deprecated and replaced by [class]. See element [conversionRule] near line 4
+19:29:21,982 |-WARN in ch.qos.logback.core.joran.action.ConversionRuleAction - [converterClass] attribute is deprecated and replaced by [class]. See element [conversionRule] near line 5
+19:29:22,023 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [loggerName] in [net.logstash.logback.fieldnames.LogstashFieldNames]
+]]></system-err>
+</testsuite>
