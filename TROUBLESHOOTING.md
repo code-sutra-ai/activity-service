@@ -111,6 +111,10 @@ What the backend must send for `/api/tasks` responses
 
 These headers must be present both on the preflight (`OPTIONS`) response and the actual response (GET/POST/etc.).
 
+Important rule
+
+- When `Access-Control-Allow-Credentials` is `true`, the server must return an explicit origin in `Access-Control-Allow-Origin` (for example `http://localhost:5173`). Returning `*` is invalid in that case and browsers will reject the response.
+
 Quick verification with curl
 
 1) Preflight (OPTIONS):
@@ -121,7 +125,16 @@ curl -i -X OPTIONS 'http://localhost:8080/api/tasks' \
   -H 'Access-Control-Request-Method: GET' -v
 ```
 
-Expect `Access-Control-Allow-Origin: http://localhost:5173` and `Access-Control-Allow-Credentials: true` in the response headers.
+Expected relevant response headers (examples):
+
+```
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: http://localhost:5173
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS,PATCH
+Access-Control-Allow-Headers: Content-Type,Authorization
+Access-Control-Max-Age: 3600
+```
 
 2) Real request (GET):
 
@@ -129,7 +142,14 @@ Expect `Access-Control-Allow-Origin: http://localhost:5173` and `Access-Control-
 curl -i 'http://localhost:8080/api/tasks' -H 'Origin: http://localhost:5173' -v
 ```
 
-Expect the same headers on the response.
+Expected (relevant) headers on the GET response:
+
+```
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: http://localhost:5173
+Access-Control-Allow-Credentials: true
+Vary: Origin
+```
 
 Browser (React) notes
 
@@ -138,13 +158,41 @@ Browser (React) notes
   - fetch: `fetch(url, { credentials: 'include', ... })`
   - axios: `axios.get(url, { withCredentials: true })`
 
-- The server must NOT return `Access-Control-Allow-Origin: *` when `Access-Control-Allow-Credentials: true` is present — browsers will reject that combination. Instead return the explicit origin string (e.g., `http://localhost:5173`).
+- The browser will block requests if the server returns `Access-Control-Allow-Origin: *` while `Access-Control-Allow-Credentials` is `true`.
+- The origin string returned by the server must exactly match the request Origin (including scheme and port).
+
+Quick troubleshooting checklist
+
+- Inspect the Network tab in browser DevTools and look at the `OPTIONS` preflight request:
+  - Is the preflight returning 200? Are `Access-Control-Allow-Origin` and `Access-Control-Allow-Credentials` present?
+- Confirm the request path is `/api/tasks` (our policy requires the explicit origin for this endpoint).
+- Ensure there are no other CORS filters or proxies that override or remove headers.
+- If you're using Spring Security, make sure OPTIONS is permitted (or that your CORS filter runs before security filters).
 
 If you still see issues
 
-- Check the browser DevTools Network tab. Inspect the `OPTIONS` preflight request — status must be 200 and the appropriate `Access-Control-*` headers must be present.
-- Confirm the request path matches `/api/tasks` (our filter applies specifically to that path for the production header requirement).
-- Ensure no other filters or CDNs are rewriting or removing CORS headers.
+- Paste the exact request headers (from browser DevTools) and the response headers here or in a PR comment and I will analyze them.
+
+### Explanation: MockMvc tests vs Browser behavior and configuration guidance
+
+- MockMvc (used by many integration tests in this project) simulates HTTP requests inside the Spring test context and applies Spring MVC's CORS configuration. In tests you may see headers produced by Spring's `CorsRegistry` or test-specific CORS filters even when the runtime behavior in a deployed app is different.
+
+- Browsers enforce CORS for JavaScript requests. When your React app calls the API the browser will:
+  - Perform an `OPTIONS` preflight for non-simple requests and expect the server to respond with `Access-Control-*` headers.
+  - Reject responses that return `Access-Control-Allow-Origin: *` together with `Access-Control-Allow-Credentials: true`.
+
+- Why the tests sometimes set `allowedOriginPatterns("*")` or echo the request origin:
+  - In the test environment it's common to permit `allowedOriginPatterns("*")` so MockMvc will echo the `Origin` header back (this simplifies tests that assert the header is present). This is a convenience for tests, not a recommendation for production.
+
+- Production recommendation:
+  - Don't rely on `allowedOriginPatterns("*")` when your endpoints require credentials. Instead explicitly list allowed origins (for example, `http://localhost:5173` for local development) either in `application.yml` or environment variables and load them into your CORS config.
+  - Centralize CORS handling in one place (prefer Spring MVC `WebMvcConfigurer.addCorsMappings(...)` or a single `CorsFilter`) and avoid duplicating CORS logic across multiple filters — duplicates make header precedence confusing and can break the exact-origin requirement for credentials.
+  - If you need to allow multiple environments (local, staging, prod), read allowed origins from a comma-separated config value such as `app.cors.allowed-origins` and validate entries on startup.
+
+- Quick production checklist:
+  - Confirm `app.cors.allowed-origins` or equivalent contains only explicit origins when `allowCredentials` is true.
+  - Ensure CORS config is registered for the intended path(s) (for example `/api/**`).
+  - If using Spring Security, ensure CORS configuration is applied before security filters (or use `CorsConfigurationSource` integrated with security).
 
 ## When to Ask for Help
 - If you see persistent `ApplicationContext` errors after following these steps, check for recent changes to configuration or dependencies.
