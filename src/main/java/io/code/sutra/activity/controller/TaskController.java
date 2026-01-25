@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -43,13 +45,24 @@ public class TaskController {
     @GetMapping("/assignee/{name}")
     public ResponseEntity<List<Task>> findByAssignee(@PathVariable String name) {
         log.info("Fetching tasks for assignee: {}", name);
-        List<Task> allTasks = taskService.getTaskByAssignee(name.toLowerCase());
+        List<Task> allTasks = taskService.getTaskByAssignee(name);
         log.info("Retrieved {}", allTasks.toString());
         return ResponseEntity.ok(allTasks);
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<?> createTask(@RequestBody Task task) {
+        // Validate required fields: title, status, service
+        List<String> missing = new ArrayList<>();
+        if (task == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "request body is required"));
+        }
+        if (task.getTitle() == null || task.getTitle().isBlank()) missing.add("title");
+        if (task.getStatus() == null || task.getStatus().isBlank()) missing.add("status");
+        if (!missing.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "missing required fields", "missing", missing));
+        }
+
         Task created = taskService.createTask(task);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")

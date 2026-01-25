@@ -21,7 +21,9 @@ public class UserController {
     @GetMapping("/api/users")
     public ResponseEntity<List<User>> getAllUsers() {
         log.info("Fetching all users");
-        return ResponseEntity.ok(userService.getAllUsers());
+        List<User> allUsers = userService.getAllUsers();
+        log.info("Retrieved {}", allUsers.toString());
+        return ResponseEntity.ok(allUsers);
     }
 
     @PostMapping("/api/users")
@@ -44,6 +46,7 @@ public class UserController {
     @PutMapping("/api/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user) {
         try {
+            log.info("Received request to update user id={} with data: {}", id, user);
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "request body is required"));
             }
@@ -64,6 +67,7 @@ public class UserController {
 
     @DeleteMapping("/api/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        log.info("Received request to delete user id={}", id);
         try {
             boolean deleted = userService.deleteUser(id);
             if (deleted) {

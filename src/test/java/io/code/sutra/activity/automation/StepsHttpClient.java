@@ -72,8 +72,11 @@ public class StepsHttpClient {
         for (Map<String, String> row : rows) {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            String json = String.format("{ \"title\": \"%s\", \"description\": \"%s\", \"assignee\": \"%s\" }",
-                    row.get("title"), row.get("description"), row.get("assignee"));
+            // ensure required 'service' exists; default to 'test-service' if missing
+            String service = row.getOrDefault("service", "");
+            if (service == null || service.isBlank()) service = "test-service";
+            String json = String.format("{ \"title\": \"%s\", \"description\": \"%s\", \"assignee\": \"%s\", \"service\": \"%s\" }",
+                    row.get("title"), row.get("description"), row.get("assignee"), service);
             HttpEntity<String> entity = new HttpEntity<>(json, headers);
             latestResponse = restTemplate.postForEntity(url("/tasks"), entity, String.class);
             assertThat(latestResponse.getStatusCode()).isIn(HttpStatus.CREATED, HttpStatus.OK);
@@ -101,10 +104,12 @@ public class StepsHttpClient {
     @When("I POST {string} with the above table")
     public void i_post_with_above_table(String path, DataTable table) {
         List<Map<String, String>> rows = table.asMaps(String.class, String.class);
-        List<String> objects = rows.stream().map(row ->
-                String.format("{ \"title\": \"%s\", \"description\": \"%s\", \"assignee\": \"%s\" }",
-                        row.get("title"), row.get("description"), row.get("assignee"))
-        ).collect(Collectors.toList());
+        List<String> objects = rows.stream().map(row -> {
+                String service = row.getOrDefault("service", "");
+                if (service == null || service.isBlank()) service = "test-service";
+                return String.format("{ \"title\": \"%s\", \"description\": \"%s\", \"assignee\": \"%s\", \"service\": \"%s\" }",
+                        row.get("title"), row.get("description"), row.get("assignee"), service);
+        }).collect(Collectors.toList());
         String arrayJson = "[" + String.join(",", objects) + "]";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -124,7 +129,7 @@ public class StepsHttpClient {
     public void a_task_exists_with_title_and_assignee(String title, String assignee) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        String json = String.format("{ \"title\": \"%s\", \"description\": \"auto-created\", \"assignee\": \"%s\" }",
+        String json = String.format("{ \"title\": \"%s\", \"description\": \"auto-created\", \"assignee\": \"%s\", \"service\": \"test-service\" }",
                 title, assignee);
         HttpEntity<String> entity = new HttpEntity<>(json, headers);
         latestResponse = restTemplate.postForEntity(url("/tasks"), entity, String.class);

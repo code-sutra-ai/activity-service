@@ -23,7 +23,7 @@ public class Task {
 
     private String assignee;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String service;
 
     public String getTitle() {
