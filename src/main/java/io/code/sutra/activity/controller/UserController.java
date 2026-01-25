@@ -41,19 +41,26 @@ public class UserController {
         }
     }
 
-    /*@PutMapping
-    public ResponseEntity<?> updateUser(@RequestBody Map<String, String> request) {
+    @PutMapping("/api/users/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user) {
         try {
-            String oldName = request.get("oldName");
-            String newName = request.get("newName");
-            User user = userService.updateUser(oldName, newName);
-            return ResponseEntity.ok(user.getName());
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "request body is required"));
+            }
+            // Ensure name is present if provided and not blank
+            if (user.getName() != null && user.getName().isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "name cannot be blank"));
+            }
+            User updated = userService.updateUser(id, user);
+            if (updated == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
+            }
+            return ResponseEntity.ok(Map.of("id", updated.getId(), "name", updated.getName(), "email", updated.getEmail(), "phone", updated.getPhone(), "notes", updated.getNotes()));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("error", e.getMessage()));
+            log.error("Error updating user id={}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
         }
     }
-    */
 
     @DeleteMapping("/api/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {

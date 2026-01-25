@@ -28,7 +28,7 @@ public class CorsIntegrationTest {
 
     @Test
     void preflight_should_return_cors_headers() throws Exception {
-        String origin = "http://example.com";
+        String origin = "http://jugaads.co.iz";
 
         var result = mockMvc.perform(options("/hello")
                 .header("Origin", origin)
@@ -48,7 +48,7 @@ public class CorsIntegrationTest {
 
     @Test
     void get_with_origin_should_return_access_control_allow_origin() throws Exception {
-        String origin = "http://example.com";
+        String origin = "http://jugaads.co.iz";
 
         var result = mockMvc.perform(get("/hello").header("Origin", origin))
             .andExpect(status().isOk())

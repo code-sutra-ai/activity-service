@@ -19,6 +19,22 @@ public class User {
     @Column(unique = true, nullable = false)
     private String name;
 
+    // Optional fields
+    @Column(nullable = true)
+    private String email;
+
+    @Column(nullable = true)
+    private String phone;
+
+    @Column(nullable = true, length = 2000)
+    private String notes;
+
+    // Keep a convenience constructor used by tests and code that supplies id and name only
+    public User(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public String getName() {
         if (this.name == null || this.name.isEmpty()) return this.name;
         String original = this.name;
