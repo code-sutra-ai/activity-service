@@ -1,0 +1,5 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"Task service BDD test","When creating a task, saved task is returned","SUCCESS","2026-01-30T16:37:35.299955-05:00[America/New_York]","0.0","0.14"
+"Task service BDD test","Assigning a task updates assignee","SUCCESS","2026-01-30T16:37:35.443536-05:00[America/New_York]","0.0","0.0"
+"Task service BDD test","Deleting existing task returns true","SUCCESS","2026-01-30T16:37:35.450738-05:00[America/New_York]","0.0","0.0"
+"Task service BDD test","Given no tasks, when getAllTasks is called, then return empty list","SUCCESS","2026-01-30T16:37:35.457038-05:00[America/New_York]","0.0","0.0"

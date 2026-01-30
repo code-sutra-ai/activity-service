@@ -1,0 +1,45 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          cognito:
+            client-id:
+            client-secret:
+            scope:
+              # scope will be populated from Secrets Manager in prod when app.secrets.enabled=true
+              # e.g. from secret JSON: {"scope": ["email","openid","phone"]}
+            # Spring Security redirect-uri config (will be populated from Secrets Manager in prod if present)
+            redirect-uri:
+        provider:
+          cognito:
+            issuer-uri:
+            user-name-attribute: username
+
+# Enable AWS Secrets Manager for prod and list secret ids to fetch. When enabled, the AwsSecretsManagerConfig
+# will register found secret values into the Spring Environment and (when profile=prod) map Cognito fields
+# (issuer-uri, client-id, client-secret, user-name-attribute, redirect-uri, scope) from the secrets into the corresponding
+# Spring properties so the application picks them up.
+app:
+  secrets:
+    enabled: true
+    # Comma separated list of secret ids to fetch from AWS Secrets Manager for prod.
+    # Replace the example with your actual secret path/ids, e.g. 'auth/cognito' or the full secret ARN.
+    names: "auth/cognito"
+    # Optional AWS region override (if your role/host doesn't provide region info)
+    region: "us-east-2"
+
+# Example secret JSON (recommended) stored in Secrets Manager under 'auth/cognito':
+# {
+#   "client-id": "6j7uelpdm9vvf08e7p79m3k9es",
+#   "client-secret": "super-secret-client-secret-value",
+#   "issuer-uri": "https://cognito-idp.us-east-2.amazonaws.com/us-east-2_9kxuDbZX1",
+#   "user-name-attribute": "username",
+#   "redirect-uri": "https://d84l1y8p4kdic.cloudfront.net",
+#   "scope": ["email","openid","phone"]
+# }
+# Notes:
+# - When 'scope' is provided as a JSON array in the secret, our code registers the flattened key 'scope' as a value;
+#   Spring will accept a comma-separated scope string. If scope is an array, ensure the secret stores it as a comma-separated
+#   string or our mapping handles array-to-string conversion in an improved update.
+# - Mapping of secret keys into Spring properties occurs only when Spring 'prod' profile is active to avoid surprising overrides in dev.
