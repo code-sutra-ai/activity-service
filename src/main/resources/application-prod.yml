@@ -31,11 +31,11 @@ app:
 
 # Example secret JSON (recommended) stored in Secrets Manager under 'auth/cognito':
 # {
-#   "client-id": "6j7uelpdm9vvf08e7p79m3k9es",
+#   "client-id": "6j7uelpdm9vvf08e7p7xxxxx",
 #   "client-secret": "super-secret-client-secret-value",
-#   "issuer-uri": "https://cognito-idp.us-east-2.amazonaws.com/us-east-2_9kxuDbZX1",
+#   "issuer-uri": "https://cognito-idp.us-east-2.amazonaws.com/us-east-2_9kxxxxX1",
 #   "user-name-attribute": "username",
-#   "redirect-uri": "https://d84l1y8p4kdic.cloudfront.net",
+#   "redirect-uri": "https://dxxx8p4kdod.cloudfront.net",
 #   "scope": ["email","openid","phone"]
 # }
 # Notes:
