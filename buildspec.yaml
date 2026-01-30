@@ -42,4 +42,4 @@ phases:
 artifacts:
   files:
     - imagedefinitions.json
-    - build/libs/activity-service-app.jar
+    - build/libs/activity-service-app-build.jar

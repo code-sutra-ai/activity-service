@@ -1,0 +1,16 @@
+# Ignore everything by default, then allow the built jar
+**
+!build/
+!build/libs/
+!build/libs/activity-service-app-build.jar
+
+# Ignore sources and other files to reduce context size
+src/
+.gradle/
+build/
+target/
+node_modules/
+.idea/
+.vscode/
+*.log
+
