@@ -7,8 +7,6 @@
     <list default="true" id="f115e998-fced-4958-a2ee-f1c905657925" name="Changes" comment="Test case fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buildspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/buildspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/code/sutra/activity/config/AwsSecretsManagerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/code/sutra/activity/config/AwsSecretsManagerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-prod.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
