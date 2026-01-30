@@ -24,19 +24,19 @@ app:
   secrets:
     enabled: true
     # Comma separated list of secret ids to fetch from AWS Secrets Manager for prod.
-    # Replace the example with your actual secret path/ids, e.g. 'auth/cognito' or the full secret ARN.
-    names: "auth/cognito"
+    # Use the managed secret named 'code-sutra-secrets' by default; replace with your actual secret path/ids or ARNs.
+    names: "code-sutra-secrets"
     # Optional AWS region override (if your role/host doesn't provide region info)
     region: "us-east-2"
 
-# Example secret JSON (recommended) stored in Secrets Manager under 'auth/cognito':
+# Example secret JSON (recommended) stored in Secrets Manager under 'code-sutra-secrets' (placeholders shown):
 # {
-#   "client-id": "6j7uelpdm9vvf08e7p7xxxxx",
-#   "client-secret": "super-secret-client-secret-value",
-#   "issuer-uri": "https://cognito-idp.us-east-2.amazonaws.com/us-east-2_9kxxxxX1",
+#   "client-id": "<your-client-id>",
+#   "client-secret": "<your-client-secret>",
+#   "issuer-uri": "https://cognito-idp.<region>.amazonaws.com/<user-pool-id>",
 #   "user-name-attribute": "username",
-#   "redirect-uri": "https://dxxx8p4kdod.cloudfront.net",
-#   "scope": ["email","openid","phone"]
+#   "redirect-uri": "https://your-app.example.com/login/oauth2/code/cognito",
+#   "scope": "email,openid,phone"
 # }
 # Notes:
 # - When 'scope' is provided as a JSON array in the secret, our code registers the flattened key 'scope' as a value;
