@@ -54,3 +54,10 @@ app:
     # allowed-origins: "http://localhost:3000,http://127.0.0.1:3000"
     allowed-origins: "*"
     allow-credentials: false
+
+# Local/test dummy JWT config - use Authorization: Bearer Dummy to authenticate locally
+app:
+  security:
+    dummy-token: "Dummy"
+    dummy-user: "local-user"
+    dummy-roles: "ROLE_USER"
