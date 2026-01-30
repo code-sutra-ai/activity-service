@@ -93,6 +93,9 @@ dependencies {
 	testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.14.0'
 	testImplementation 'io.cucumber:cucumber-spring:7.14.0'
 
+    // AWS SDK v2 - Secrets Manager client
+    implementation 'software.amazon.awssdk:secretsmanager:2.20.30'
+
 }
 
 // Force JUnit 5.9.2 / JUnit Platform 1.9.2 for all configurations to avoid the NoSuchMethodError
