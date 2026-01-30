@@ -1,0 +1,23 @@
+Index: build/resources/main/application-local.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># Local profile configuration\n# spring.profiles.active is NOT allowed in profile-specific YAML files and must be set via environment or command line\n\n# Resilience4j configuration\nresilience4j:\n  circuitbreaker:\n    instances:\n      default:\n        registerHealthIndicator: true\n        slidingWindowSize: 10\n        minimumNumberOfCalls: 5\n        failureRateThreshold: 50\n        waitDurationInOpenState: 10000\n\n# Cognito authentication configuration for local\nCOGNITO_JWK_URL: \"http://localhost/dummy-jwk\"\nCOGNITO_ISSUER: \"\"\n\n# Logging\nlogging:\n  level:\n    root: INFO\n    org:\n      springframework:\n        web: INFO\n\n# Prometheus, Actuator, and Tracing configuration\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: health,info,prometheus\n  endpoint:\n    prometheus:\n      enabled: true\n  tracing:\n    enabled: true\n    sampling:\n      probability: 1.0\n  otlp:\n    tracing:\n      endpoint: http://localhost:4318/v1/traces\n      export:\n        enabled: true\n  metrics:\n    export:\n      prometheus:\n        enabled: true
+===================================================================
+diff --git a/build/resources/main/application-local.yml b/build/resources/main/application-local.yml
+--- a/build/resources/main/application-local.yml	(revision 15acdc24be7f15b4fae1a3561b55e7fd392b0782)
++++ b/build/resources/main/application-local.yml	(date 1769284673995)
+@@ -45,4 +45,12 @@
+   metrics:
+     export:
+       prometheus:
+-        enabled: true
+\ No newline at end of file
++        enabled: true
++
++# Local CORS (example) - uncomment and set origins for local testing
++app:
++  cors:
++    # Example: allow local frontend development server and localhost tools
++    # allowed-origins: "http://localhost:3000,http://127.0.0.1:3000"
++    allowed-origins: "*"
++    allow-credentials: false
