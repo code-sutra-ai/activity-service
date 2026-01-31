@@ -1,7 +1,4 @@
 version: 0.2
-env:
-  variables:
-    SPRING_PROFILES_ACTIVE: "prod"
 phases:
   install:
     runtime-versions:
@@ -42,4 +39,4 @@ phases:
 artifacts:
   files:
     - imagedefinitions.json
-    - build/libs/activity-service-app.jar
+    - build/libs/activity-service-app-build.jar
