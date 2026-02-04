@@ -1,4 +1,7 @@
 version: 0.2
+env:
+  variables:
+    SPRING_PROFILES_ACTIVE: "prod"
 phases:
   install:
     runtime-versions:
@@ -13,12 +16,15 @@ phases:
       - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/code-sutra-ai
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+      - # Resolve the built jar (first jar found in build/libs). This makes the docker build robust to varying jar names.
+      - JAR_FILE=$(ls build/libs/*.jar | head -n 1)
+      - echo "Resolved JAR_FILE=$JAR_FILE"
       - echo Spring Profiles Active... $SPRING_PROFILES_ACTIVE
   build:
     commands:
       - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
+      - echo Building the Docker image (using jar: $JAR_FILE)...
+      - docker build --build-arg JAR_FILE="$JAR_FILE" -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
@@ -39,4 +45,4 @@ phases:
 artifacts:
   files:
     - imagedefinitions.json
-    - build/libs/activity-service-app-build.jar
+    - build/libs/*.jar

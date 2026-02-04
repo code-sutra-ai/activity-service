@@ -1,16 +1,23 @@
-# Ignore everything by default, then allow the built jar
-**
-!build/
-!build/libs/
+# Ignore VCS
+.git
+
+# Gradle caches
+.gradle/
+
+# Source and dev files (not needed in image)
+src/
+node_modules/
+
+# Build outputs we don't need in the image (but keep build/libs)
+build/tmp/
+build/reports/
+build/serenity/
+
+# Keep the main built jar
 !build/libs/activity-service-app-build.jar
 
-# Ignore sources and other files to reduce context size
-src/
-.gradle/
-build/
-target/
-node_modules/
+# Other IDE/OS files
 .idea/
 .vscode/
+.DS_Store
 *.log
-
