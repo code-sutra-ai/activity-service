@@ -16,8 +16,8 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - echo Building the Docker image (using jar: $JAR_FILE)...
-      - docker build --build-arg JAR_FILE="$JAR_FILE" -t $REPOSITORY_URI:latest .
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
