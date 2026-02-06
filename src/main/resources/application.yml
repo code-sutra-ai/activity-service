@@ -8,12 +8,6 @@ resilience4j:
         minimumNumberOfCalls: 5
         failureRateThreshold: 50
         waitDurationInOpenState: 10000
-
-# Cognito authentication configuration
-# Set these in your environment or secrets manager for production
-COGNITO_JWK_URL: ""
-COGNITO_ISSUER: ""
-
 # Logging
 logging:
   level:
@@ -51,3 +45,7 @@ management:
     # Leave empty in production or when you prefer no global CORS mapping. Example: "https://app.jugaads.co.iz,https://admin.jugaads.co.iz"
 #    allowed-origins: "*"
 #    allow-credentials: false
+
+app:
+  secrets:
+    enabled: false

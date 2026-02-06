@@ -11,11 +11,6 @@ resilience4j:
         minimumNumberOfCalls: 5
         failureRateThreshold: 50
         waitDurationInOpenState: 10000
-
-# Cognito authentication configuration for local
-COGNITO_JWK_URL: "http://localhost/dummy-jwk"
-COGNITO_ISSUER: ""
-
 # Logging
 logging:
   level:

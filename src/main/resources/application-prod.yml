@@ -1,45 +1,34 @@
-spring:
-  security:
-    oauth2:
-      client:
-        registration:
-          cognito:
-            client-id:
-            client-secret:
-            scope:
-              # scope will be populated from Secrets Manager in prod when app.secrets.enabled=true
-              # e.g. from secret JSON: {"scope": ["email","openid","phone"]}
-            # Spring Security redirect-uri config (will be populated from Secrets Manager in prod if present)
-            redirect-uri:
-        provider:
-          cognito:
-            issuer-uri:
-            user-name-attribute: username
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          cognito:
+#            client-id: $COGNITO_CLIENT_ID
+#            client-secret: $COGNITO_CLIENT_SECRET
+#            scope: $COGNITO_SCOPE
+#              # scope will be populated from Secrets Manager in prod when app.secrets.enabled=true
+#              # e.g. from secret JSON: {"scope": ["email","openid","phone"]}
+#            # Spring Security redirect-uri config (will be populated from Secrets Manager in prod if present)
+#            redirect-uri: $COGNITO_REDIRECT_URI
+#        provider:
+#          cognito:
+#            issuer-uri: COGNITO_ISSUER_URI
+#            user-name-attribute: username
 
 # Enable AWS Secrets Manager for prod and list secret ids to fetch. When enabled, the AwsSecretsManagerConfig
 # will register found secret values into the Spring Environment and (when profile=prod) map Cognito fields
 # (issuer-uri, client-id, client-secret, user-name-attribute, redirect-uri, scope) from the secrets into the corresponding
 # Spring properties so the application picks them up.
-app:
-  secrets:
-    enabled: true
-    # Comma separated list of secret ids to fetch from AWS Secrets Manager for prod.
-    # Use the managed secret named 'code-sutra-secrets' by default; replace with your actual secret path/ids or ARNs.
-    names: "code-sutra-secrets"
-    # Optional AWS region override (if your role/host doesn't provide region info)
-    region: "us-east-2"
+#app:
+#  secrets:
+#    enabled: true
+#    # Comma separated list of secret ids to fetch from AWS Secrets Manager for prod.
+#    # Use the managed secret named 'code-sutra-secrets' by default; replace with your actual secret path/ids or ARNs.
+#    names: "prod/code-sutra/activity-service"
+#    # Optional AWS region override (if your role/host doesn't provide region info)
+#    region: "us-east-1"
 
-# Example secret JSON (recommended) stored in Secrets Manager under 'code-sutra-secrets' (placeholders shown):
-# {
-#   "client-id": "<your-client-id>",
-#   "client-secret": "<your-client-secret>",
-#   "issuer-uri": "https://cognito-idp.<region>.amazonaws.com/<user-pool-id>",
-#   "user-name-attribute": "username",
-#   "redirect-uri": "https://your-app.example.com/login/oauth2/code/cognito",
-#   "scope": "email,openid,phone"
-# }
-# Notes:
-# - When 'scope' is provided as a JSON array in the secret, our code registers the flattened key 'scope' as a value;
-#   Spring will accept a comma-separated scope string. If scope is an array, ensure the secret stores it as a comma-separated
-#   string or our mapping handles array-to-string conversion in an improved update.
-# - Mapping of secret keys into Spring properties occurs only when Spring 'prod' profile is active to avoid surprising overrides in dev.
+spring:
+  config:
+    import: optional:aws-secretsmanager:prod/code-sutra/activity-service
