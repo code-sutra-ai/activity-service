@@ -1,4 +1,4 @@
-FROM eclipse-temurin:24.0.2_12-jre-ubi10-minimal
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:24-al2023-jdk
 ARG JAR_FILE=build/libs/activity-service-app-build.jar
 COPY ${JAR_FILE} /activity-service-app.jar
 EXPOSE 8080
