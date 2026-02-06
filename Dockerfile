@@ -1,6 +1,4 @@
-# Multi-stage Dockerfile for Activity Service
-# Build stage (requires JDK 24)
-FROM amazoncorretto:24-alpine AS build
+FROM openjdk:24
 ARG JAR_FILE=build/libs/activity-service-app-build.jar
 COPY ${JAR_FILE} /activity-service-app.jar
 EXPOSE 8080
